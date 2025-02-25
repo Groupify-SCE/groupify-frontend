@@ -1,37 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import logoLight from '../assets/images/groupify-logo.png';
 import '../styles/Navbar.style.css';
-import logo from '../assets/images/groupify-logo.png';
+import DarkModeToggle from './DarkModeToggle';
 
 const Navbar = () => {
-  const isAuthenticated = true;
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   return (
-    <nav className="navbar">
-      <div className="container">
-        <div className="navbar-content">
-          <Link to="/" className="logo">
-            <img src={logo} alt="Groupify Logo" className="logo-image" />
-          </Link>
-          <div className="nav-buttons">
-            {!isAuthenticated ? (
-              <>
-                <Link to="/login" className="btn">
-                  Login
-                </Link>
-                <Link to="/signup" className="btn">
-                  Sign Up
-                </Link>
-              </>
-            ) : (
-              <Link to="/profile" className="btn">
-                Profile
-              </Link>
-            )}
-          </div>
-        </div>
+    <header className="navbar-section">
+      <div className="navbar-left">
+        <Link to="/" className="navbar-logo">
+          <img src={logoLight} alt="Light Logo" className="navbar-logo-img" />
+          <h1 className="navbar-logo-text">Groupify</h1>
+        </Link>
       </div>
-    </nav>
+
+      <div className="navbar-actions">
+        {!isAuthenticated ? (
+          <>
+            <Link to="/login" className="btn">
+              Login
+            </Link>
+            <Link to="/signup" className="btn btn-primary">
+              Sign Up
+            </Link>
+          </>
+        ) : (
+          <Link to="/profile" className="btn">
+            Profile
+          </Link>
+        )}
+
+        <DarkModeToggle />
+      </div>
+    </header>
   );
 };
 

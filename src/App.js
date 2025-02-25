@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/Landing.page';
@@ -7,6 +8,13 @@ import Navbar from './components/Navbar';
 import ProfilePage from './pages/Profile.page';
 
 function App() {
+  useEffect(() => {
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
+
   return (
     <Router>
       <Navbar />

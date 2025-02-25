@@ -1,0 +1,43 @@
+/********************************************************
+  DARK MODE TOGGLE BUTTON
+********************************************************/
+.toggle-dark-mode {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid #e2e2e2;
+    border-radius: 9999px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  .toggle-dark-mode:hover {
+    border-color: #8c5ff2;
+    background-color: #8c5ff2;
+  }
+  
+  .toggle-dark-mode svg {
+    fill: #333;
+    transition: fill 0.2s;
+  }
+  
+  .toggle-dark-mode:hover svg {
+    fill: #fff;
+  }
+  
+  /* Dark mode override for toggle button */
+  .dark .toggle-dark-mode {
+    background-color: #2a2a2a;
+    border-color: #444;
+  }
+  
+  .dark .toggle-dark-mode:hover {
+    background-color: #8c5ff2;
+    border-color: #8c5ff2;
+  }
+  
+  .dark .toggle-dark-mode svg {
+    fill: #fff;
+  }
