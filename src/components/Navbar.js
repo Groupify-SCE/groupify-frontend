@@ -4,7 +4,7 @@ import '../styles/Navbar.style.css';
 import logo from '../assets/images/groupify-logo.png';
 
 const Navbar = () => {
-  const isAuthenticated = false;
+  const isAuthenticated = true;
 
   return (
     <nav className="navbar">
