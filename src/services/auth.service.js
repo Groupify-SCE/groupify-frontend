@@ -1,11 +1,9 @@
-import { UserRegisterData } from "../components/types/auth.types";
-import { BackendManager } from "./backend.manager";
+import { BackendManager } from './backend.manager';
 
 class AuthService extends BackendManager {
+  static instance;
 
-  private static instance: AuthService;
-
-  private constructor() {
+  constructor() {
     super('auth');
   }
 
@@ -16,8 +14,8 @@ class AuthService extends BackendManager {
     return AuthService.instance;
   }
 
-  async signup(userData: UserRegisterData) {
-    return this.sendRequest('signup', {
+  async register(userData) {
+    return this.sendRequest('register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

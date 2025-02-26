@@ -1,11 +1,9 @@
-export abstract class BackendManager {
-  private baseUrl: string;
-
-  constructor(extension: string) {
+export class BackendManager {
+  constructor(extension) {
     this.baseUrl = `http://localhost:3001/${extension}`;
   }
 
-  protected async sendRequest(path: string, init?: RequestInit): Promise<Response> {
+  async sendRequest(path, init) {
     try {
       const response = await fetch(`${this.baseUrl}/${path}`, init);
       return response;
