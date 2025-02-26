@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../styles/SignupPage.style.css';
 import authService from '../services/auth.service';
 import { StatusCodes } from 'http-status-codes';
+import { toast } from 'react-toastify';
+
 function SignupPage() {
   const [formData, setFormData] = useState({
     username: '',
@@ -30,10 +32,11 @@ function SignupPage() {
     }
     const response = await authService.register(formData);
     if (response.status === StatusCodes.CREATED) {
-      alert('User registered successfully');
       navigate('/login');
+      toast.success('User Registered Successfully');
     } else {
       const responseData = await response.json();
+      toast.error('Error Registering User');
       setError(responseData.response);
     }
   };
