@@ -47,6 +47,10 @@ class AuthService extends BackendManager {
       method: 'GET',
     });
   }
+
+  async logout() {
+    Cookies.remove('Authorization');
+  }
 }
 
 const authService = AuthService.getInstance();

@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logoLight from '../assets/images/groupify-logo.png';
 import '../styles/Navbar.style.css';
 import DarkModeToggle from './DarkModeToggle';
 import authService from '../services/auth.service';
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const checkStatus = async () => {
@@ -17,7 +20,14 @@ const Navbar = () => {
     };
 
     checkStatus();
-  }, []);
+  }, [location.pathname]);
+
+  const handleLogout = async () => {
+    await authService.logout();
+    setIsAuthenticated(false);
+    navigate('/');
+    toast.success('Logged Out Successfully');
+  };
 
   return (
     <header className="navbar-section">
@@ -39,9 +49,14 @@ const Navbar = () => {
             </Link>
           </>
         ) : (
-          <Link to="/profile" className="btn">
-            Profile
-          </Link>
+          <>
+            <Link to="/profile" className="btn">
+              Profile
+            </Link>
+            <button onClick={handleLogout} className="btn btn-primary">
+              Logout
+            </button>
+          </>
         )}
 
         <DarkModeToggle />
