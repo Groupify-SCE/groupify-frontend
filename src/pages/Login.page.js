@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/AuthPage.style.css';
+import authService from '../services/auth.service';
+import { StatusCodes } from 'http-status-codes';
+import { toast } from 'react-toastify';
 
 function LoginPage() {
   const [formData, setFormData] = useState({
@@ -8,6 +11,7 @@ function LoginPage() {
     password: '',
   });
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -18,6 +22,15 @@ function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const response = await authService.login(formData);
+    if (response.status === StatusCodes.OK) {
+      navigate('/profile');
+      toast.success('Login Successful');
+    } else {
+      toast.error('Invalid Login Credentials');
+      const responseData = await response.json();
+      setError(responseData.response);
+    }
   };
 
   return (
