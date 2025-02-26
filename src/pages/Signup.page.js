@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../styles/SignupPage.style.css';
+import '../styles/AuthPage.style.css';
 import authService from '../services/auth.service';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
