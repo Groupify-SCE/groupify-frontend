@@ -6,6 +6,8 @@ import LoginPage from './pages/Login.page';
 import SignupPage from './pages/Signup.page';
 import Navbar from './components/Navbar';
 import ProfilePage from './pages/Profile.page';
+import { ToastContainer } from 'react-toastify';
+import './styles/Alert.style.css';
 
 function App() {
   useEffect(() => {
@@ -18,6 +20,17 @@ function App() {
   return (
     <Router>
       <Navbar />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
