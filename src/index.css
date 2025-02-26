@@ -81,3 +81,36 @@ code {
   background-color: #16151f;
   color: #fff;
 }
+
+input {
+  border: 1px solid #e2e2e2;
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  color: #333;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input::placeholder {
+  color: #999;
+}
+
+input:focus {
+  border-color: #8c5ff2; /* Your accent color */
+}
+
+/* Dark mode overrides for any <input> */
+.dark input {
+  background-color: transparent;
+  color: #fff;
+  border-color: #444;
+}
+
+.dark input::placeholder {
+  color: #999;
+}
+
+.dark input:focus {
+  border-color: #8c5ff2;
+}
