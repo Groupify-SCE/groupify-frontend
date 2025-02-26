@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import logoLight from '../assets/images/groupify-logo.png';
 import '../styles/Navbar.style.css';
 import DarkModeToggle from './DarkModeToggle';
+import authService from '../services/auth.service';
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const checkStatus = async () => {
+      const response = await authService.status();
+      if (response.status === 200) {
+        setIsAuthenticated(true);
+      }
+    };
+
+    checkStatus();
+  }, []);
 
   return (
     <header className="navbar-section">
