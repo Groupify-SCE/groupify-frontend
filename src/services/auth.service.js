@@ -51,6 +51,16 @@ class AuthService extends BackendManager {
   async logout() {
     Cookies.remove('Authorization');
   }
+
+  async forgotPassword(email) {
+    return this.sendRequest('request-reset-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
+  }
 }
 
 const authService = AuthService.getInstance();

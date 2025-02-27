@@ -1,12 +1,33 @@
 import React, { useState } from 'react';
 import '../styles/AuthPage.style.css';
+import authService from '../services/auth.service';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await authService.forgotPassword(email);
+      if (response.status === 200) {
+        toast.success('Password Reset Request Sent');
+        navigate('/login');
+      } else {
+        toast.error('Error Requesting Password Reset');
+        const data = await response.json();
+        if (data.response) {
+          setError(data.response);
+        } else if (data.error) {
+          setError('Enter a valid email address');
+        }
+      }
+    } catch (error) {
+      toast.error('Error Requesting Password Reset');
+    }
   };
 
   return (
