@@ -5,6 +5,7 @@
   align-items: center;
   padding: 2rem 1rem;
   min-height: calc(100vh - 60px);
+  margin-top: -4rem;
 }
 
 .auth-container {
@@ -15,6 +16,10 @@
   border-radius: 0.75rem;
   padding: 2rem;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.forgot-password-section {
+  margin-top: -7rem;
 }
 
 /* Headings / text */
@@ -66,6 +71,7 @@
 .auth-link-to-login {
   text-align: center;
   font-size: 0.875rem;
+  margin-bottom: -0.5rem;
 }
 .auth-link {
   color: #8c5ff2;

@@ -79,6 +79,12 @@ function LoginPage() {
         </form>
 
         <p className="auth-link-to-login">
+          Forgot your password?{' '}
+          <Link to="/forgot-password" className="auth-link">
+            Reset Password
+          </Link>
+        </p>
+        <p className="auth-link-to-login">
           Don't have an account?{' '}
           <Link to="/signup" className="auth-link">
             Sign up
