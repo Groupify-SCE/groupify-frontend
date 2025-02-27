@@ -1,15 +1,38 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import authService from '../services/auth.service';
 
 const ResetPasswordPage = () => {
-  const { token } = useParams();
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get('token');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (password !== passwordConfirmation) {
+      setError('Passwords do not match');
+      return;
+    }
+    try {
+      const response = await authService.resetPassword(
+        token,
+        password,
+        passwordConfirmation
+      );
+      if (response.status === 200) {
+        toast.success('Password reset successful');
+        navigate('/login');
+      } else {
+        toast.error('Error Resetting Password');
+        setError(response.response);
+      }
+    } catch (error) {
+      toast.error('Error Resetting Password');
+    }
   };
 
   return (
