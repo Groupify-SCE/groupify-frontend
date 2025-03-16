@@ -8,7 +8,7 @@ import Navbar from './components/Navbar';
 import ProfilePage from './pages/Profile.page';
 import ForgotPasswordPage from './pages/ForgotPassword.page';
 import ResetPasswordPage from './pages/ResetPassword.page';
-import ProjectPage from './pages/Project.page';
+//import ProjectPage from './pages/Project.page';
 import { ToastContainer } from 'react-toastify';
 import './styles/Alert.style.css';
 
@@ -41,7 +41,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/projects" element={<ProjectPage />} />
+        {/*<Route path="/projects" element={<ProjectPage />} />*/}
       </Routes>
     </Router>
   );
