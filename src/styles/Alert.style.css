@@ -5,6 +5,7 @@
   padding: 1rem;
   margin: 0.5rem;
   font-weight: bold;
+  transition: all 0.2s ease;
 }
 
 .Toastify__toast--success {
@@ -39,6 +40,7 @@
   color: inherit;
 }
 
+/* Dark Mode Overrides */
 .dark .Toastify__toast {
   background-color: #2a2a2a;
   color: #fff;
@@ -62,4 +64,19 @@
 .dark .Toastify__toast--warning {
   background-color: #754e0f;
   color: #ffffff;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 600px) {
+  .Toastify__toast {
+    padding: 0.8rem;
+    margin: 0.3rem auto; /* center the toast */
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    max-width: 90%; /* prevent frame from extending off screen */
+  }
+
+  .Toastify__toast-body {
+    font-size: 0.75rem;
+  }
 }
