@@ -53,13 +53,13 @@ function ProfilePage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // יצירת גרסאות trimmed לשמות
+    // Create trimmed versions for first and last names
     const trimmedFirstName = formData.firstName
       ? formData.firstName.trim()
       : '';
     const trimmedLastName = formData.lastName ? formData.lastName.trim() : '';
 
-    // בדיקה: השמות לא צריכים להכיל מספרים או תווים מיוחדים (רק אותיות ורווחים)
+    // Check: names should contain only letters and spaces (no numbers or special characters)
     if (/[^A-Za-zא-ת\s]/.test(trimmedFirstName)) {
       setError(
         'First name is not valid (should contain only letters and spaces)'
@@ -73,13 +73,13 @@ function ProfilePage() {
       return;
     }
 
-    // יצירת משתנים trimmed לסיסמה ולאישור
+    // Create trimmed variables for password and its confirmation
     const trimmedPassword = formData.password ? formData.password.trim() : '';
     const trimmedPasswordConfirmation = formData.passwordConfirmation
       ? formData.passwordConfirmation.trim()
       : '';
 
-    // בדיקת התאמה בפרונט (אופציונלי, אך מומלץ לחוויית משתמש)
+    // Optional front-end check: if a password is provided, they must match
     if (trimmedPassword && trimmedPassword !== trimmedPasswordConfirmation) {
       setError('Passwords do not match');
       return;
@@ -87,7 +87,7 @@ function ProfilePage() {
 
     setError('');
 
-    // בניית האובייקט לעדכון: השוואה בין formData ל-initialData
+    // Build the update object by comparing formData to initialData
     let updateData = {};
     if (initialData) {
       Object.keys(initialData).forEach((key) => {
@@ -97,13 +97,13 @@ function ProfilePage() {
       });
     }
 
-    // אם סיסמה הוזנה – נוסיף גם אותה וגם את ה־passwordConfirmation כך שהשרת יקבל את שניהם
+    // If a password was entered, add it (and its confirmation) so the server receives both
     if (trimmedPassword) {
       updateData.password = trimmedPassword;
       updateData.passwordConfirmation = trimmedPasswordConfirmation;
     }
 
-    // אם לא שונה כלום, להודיע למשתמש
+    // If nothing changed, inform the user
     if (Object.keys(updateData).length === 0) {
       toast.info('No changes to update');
       return;
@@ -114,7 +114,7 @@ function ProfilePage() {
       const data = await response.json();
       if (response.status === StatusCodes.OK) {
         toast.success('User updated successfully!');
-        fetchData(); // רענון הנתונים מהשרת
+        fetchData(); // Refresh data from the server
       } else {
         toast.error(data.response);
       }
@@ -129,85 +129,79 @@ function ProfilePage() {
       <h1 className="profile-header">Welcome Back, {username}!</h1>
       {error && <p className="profile-error">{error}</p>}
       <form className="profile-form" onSubmit={handleSubmit}>
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
-            <input
-              id="username"
-              type="text"
-              name="username"
-              placeholder="Your username"
-              value={formData.username}
-              onChange={handleChange}
-              disabled
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="firstName">First Name</label>
-            <input
-              id="firstName"
-              type="text"
-              name="firstName"
-              placeholder="Your first name"
-              value={formData.firstName}
-              onChange={handleChange}
-            />
-          </div>
+        <div className="form-group">
+          <label htmlFor="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            name="username"
+            placeholder="Your username"
+            value={formData.username}
+            onChange={handleChange}
+            disabled
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="firstName">First Name</label>
+          <input
+            id="firstName"
+            type="text"
+            name="firstName"
+            placeholder="Your first name"
+            value={formData.firstName}
+            onChange={handleChange}
+          />
         </div>
 
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="lastName">Last Name</label>
-            <input
-              id="lastName"
-              type="text"
-              name="lastName"
-              placeholder="Your last name"
-              value={formData.lastName}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              placeholder="you@example.com"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </div>
+        <div className="form-group">
+          <label htmlFor="lastName">Last Name</label>
+          <input
+            id="lastName"
+            type="text"
+            name="lastName"
+            placeholder="Your last name"
+            value={formData.lastName}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            placeholder="you@example.com"
+            value={formData.email}
+            onChange={handleChange}
+          />
         </div>
 
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="password">New Password</label>
-            <input
-              id="password"
-              type="password"
-              name="password"
-              placeholder="••••••••"
-              pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$"
-              title="Password must be at least 8 characters long and include at least one letter, one digit, and one special character."
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="passwordConfirmation">Confirm New Password</label>
-            <input
-              id="passwordConfirmation"
-              type="password"
-              name="passwordConfirmation"
-              placeholder="••••••••"
-              value={formData.passwordConfirmation}
-              onChange={handleChange}
-            />
-          </div>
+        <div className="form-group">
+          <label htmlFor="password">New Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            placeholder="••••••••"
+            pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$"
+            title="Password must be at least 8 characters long and include at least one letter, one digit, and one special character."
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="passwordConfirmation">Confirm New Password</label>
+          <input
+            id="passwordConfirmation"
+            type="password"
+            name="passwordConfirmation"
+            placeholder="••••••••"
+            value={formData.passwordConfirmation}
+            onChange={handleChange}
+          />
         </div>
 
-        <button type="submit" className="update-button">
+        <button type="submit" className="update-button grid-span-2">
           Update Info
         </button>
       </form>
