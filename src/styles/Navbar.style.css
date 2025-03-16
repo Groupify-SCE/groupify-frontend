@@ -1,0 +1,238 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap');
+
+/********************************************************
+  DESKTOP NAVBAR
+********************************************************/
+.navbar-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.2rem 4rem 0 4rem;
+  position: relative;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo {
+  flex-shrink: 0;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo-img {
+  max-height: 3rem;
+}
+
+.navbar-logo-text {
+  font-size: 2rem;
+  font-weight: bold;
+  padding-left: 0.4rem;
+  color: #8c5ff2;
+  transition: color 0.25s ease-in-out;
+}
+
+.navbar-logo-text:hover {
+  color: #6b3add;
+}
+
+.dark .navbar-logo-text {
+  color: #fff;
+}
+
+.dark .navbar-logo-text:hover {
+  color: #8c5ff2;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  color: #333;
+  text-decoration: none;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.btn:hover,
+.btn:focus {
+  background-color: #e9e9e9;
+  color: #111;
+}
+
+.btn-primary {
+  background-color: #8c5ff2;
+  border-color: #8c5ff2;
+  color: #fff;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #6b3add;
+  border-color: #6b3add;
+}
+
+.dark .btn {
+  background-color: #2a2a2a;
+  border-color: #444;
+  color: #fff;
+}
+
+.dark .btn:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+.dark .btn-primary {
+  background-color: #8c5ff2;
+  border-color: #8c5ff2;
+  color: #fff;
+}
+
+.dark .btn-primary:hover {
+  background-color: #6b3add;
+  border-color: #6b3add;
+}
+
+/********************************************************
+  MOBILE MENU ICON (HAMBURGER) - Positioned on LEFT
+********************************************************/
+.mobile-menu-icon {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1100;
+  cursor: pointer;
+}
+
+.mobile-bar {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  margin: 4px 0;
+  transition: all 0.3s ease;
+}
+
+.dark .mobile-bar {
+  background-color: #fff;
+}
+
+/********************************************************
+  MOBILE SIDEBAR
+********************************************************/
+.mobile-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100%;
+  background-color: #ffffff;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  padding: 1rem;
+}
+.mobile-sidebar.open {
+  transform: translateX(0);
+}
+.mobile-sidebar-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+.mobile-close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #333;
+}
+.dark .mobile-close-btn {
+  color: #fff;
+}
+
+.mobile-sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.mobile-sidebar-nav li {
+  padding: 1rem;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+  transition: background-color 0.2s;
+}
+.mobile-sidebar-nav li:hover {
+  background-color: #f0f0f0;
+}
+.dark .mobile-sidebar {
+  background-color: #2a2a2a;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.4);
+}
+.dark .mobile-sidebar-nav li {
+  color: #fff;
+}
+.dark .mobile-sidebar-nav li:hover {
+  background-color: #444;
+}
+
+/********************************************************
+  SIDEBAR OVERLAY
+********************************************************/
+.mobile-sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 900;
+}
+
+/********************************************************
+  RESPONSIVE ADJUSTMENTS
+********************************************************/
+@media (max-width: 768px) {
+  .navbar-actions {
+    display: none;
+  }
+  .mobile-menu-icon {
+    display: block;
+  }
+  .navbar-section {
+    padding: 0.5rem 1rem;
+  }
+  .navbar-logo-text {
+    font-size: 1.5rem;
+  }
+  /* Move the logo to the right to avoid hamburger overlap */
+  .navbar-left {
+    margin-left: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-logo-text {
+    font-size: 1.2rem;
+  }
+  .mobile-sidebar {
+    width: 200px;
+  }
+}
