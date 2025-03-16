@@ -2,130 +2,129 @@
   CONTAINER
 ********************************************************/
 .profile-container {
-    width: 80%;
-    max-width: 800px;
-    margin: 40px auto;
-    background-color: #ffffff;
-    border: 1px solid #e2e2e2;
-    border-radius: 0.75rem;
-    padding: 2rem;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-  }
-  
-  .profile-header {
-    font-size: 1.5rem;
-    margin: 0 0 1.5rem 0;
-    text-align: center;
-    color: #333;
-  }
-  
-  /* Error message style (optional) */
-  .profile-error {
-    color: #d00;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-  
-  /********************************************************
+  width: 80%;
+  max-width: 800px;
+  margin: 40px auto;
+  background-color: #ffffff;
+  border: 1px solid #e2e2e2;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.profile-header {
+  font-size: 1.5rem;
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+  color: #333;
+}
+
+/* Error message style (optional) */
+.profile-error {
+  color: #d00;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/********************************************************
     FORM LAYOUT
   ********************************************************/
-  .profile-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  /* Each row has two columns */
-  .form-row {
-    display: flex;
-    gap: 1rem;
-  }
-  
-  /* Each column expands equally */
-  .form-group {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form-group label {
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-    color: #333;
-  }
-  
-  .form-group input {
-    border: 1px solid #e2e2e2;
-    border-radius: 0.5rem;
-    padding: 0.6rem 0.75rem;
-    font-size: 0.9rem;
-    color: #333;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  
-  .form-group input::placeholder {
-    color: #999;
-  }
-  
-  .form-group input:focus {
-    border-color: #8c5ff2; /* or any accent color */
-  }
-  
-  /********************************************************
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Each row has two columns */
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Each column expands equally */
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.form-group input {
+  border: 1px solid #e2e2e2;
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.9rem;
+  color: #333;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group input::placeholder {
+  color: #999;
+}
+
+.form-group input:focus {
+  border-color: #8c5ff2; /* or any accent color */
+}
+
+/********************************************************
     UPDATE BUTTON
   ********************************************************/
-  .update-button {
-    display: block;
-    margin: 0 auto; /* center horizontally */
-    margin-top: 1rem;
-    padding: 0.75rem 1.5rem;
-    background-color: #000;
-    color: #fff;
-    border: none;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .update-button:hover {
-    background-color: #333;
-  }
-  
-  /********************************************************
+.update-button {
+  display: block;
+  margin: 0 auto; /* center horizontally */
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.update-button:hover {
+  background-color: #333;
+}
+
+/********************************************************
     DARK MODE (Optional)
   ********************************************************/
-  .dark .profile-container {
-    background-color: #1e1e2c;
-    border-color: #2a2a2a;
-    color: #fff;
-  }
-  
-  .dark .profile-header {
-    color: #fff;
-  }
-  
-  .dark .form-group label {
-    color: #fff;
-  }
-  
-  .dark .form-group input {
-    background-color: #2a2a2a;
-    border-color: #444;
-    color: #fff;
-  }
-  
-  .dark .form-group input::placeholder {
-    color: #bbb;
-  }
-  
-  .dark .update-button {
-    background-color: #333;
-    color: #fff;
-  }
-  .dark .update-button:hover {
-    background-color: #555;
-  }
-  
+.dark .profile-container {
+  background-color: #1e1e2c;
+  border-color: #2a2a2a;
+  color: #fff;
+}
+
+.dark .profile-header {
+  color: #fff;
+}
+
+.dark .form-group label {
+  color: #fff;
+}
+
+.dark .form-group input {
+  background-color: #2a2a2a;
+  border-color: #444;
+  color: #fff;
+}
+
+.dark .form-group input::placeholder {
+  color: #bbb;
+}
+
+.dark .update-button {
+  background-color: #333;
+  color: #fff;
+}
+.dark .update-button:hover {
+  background-color: #555;
+}

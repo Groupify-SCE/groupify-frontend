@@ -15,9 +15,20 @@ class UserService extends BackendManager {
   }
 
   async userInfo() {
-    return this.sendRequest('', {
+    return await this.sendRequest('', {
       credentials: 'include',
       method: 'GET',
+    });
+  }
+
+  async editUser(updateData, userId) {
+    return await this.sendRequest(`/edit`, {
+      credentials: 'include',
+      method: 'POST', // ניתן לשנות ל-PATCH בהתאם למימוש השרת
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updateData),
     });
   }
 }
