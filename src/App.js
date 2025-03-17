@@ -41,7 +41,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-        {/*<Route path="/projects" element={<ProjectPage />} />*/}
+        {/* <Route path="/projects" element={<ProjectPage />} /> */}
       </Routes>
     </Router>
   );
