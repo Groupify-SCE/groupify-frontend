@@ -1,5 +1,4 @@
 import { BackendManager } from './backend.manager';
-import Cookies from 'js-cookie';
 
 class AuthService extends BackendManager {
   static instance;
@@ -32,12 +31,8 @@ class AuthService extends BackendManager {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(userData),
+      credentials: 'include',
     });
-    if (response.headers.get('Authorization')) {
-      Cookies.set('Authorization', response.headers.get('Authorization'), {
-        expires: 7 * 24 * 60 * 60 * 1000,
-      });
-    }
     return response;
   }
 
@@ -49,7 +44,10 @@ class AuthService extends BackendManager {
   }
 
   async logout() {
-    Cookies.remove('Authorization');
+    return this.sendRequest('logout', {
+      credentials: 'include',
+      method: 'POST',
+    });
   }
 
   async forgotPassword(email) {
