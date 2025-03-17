@@ -24,7 +24,7 @@ class UserService extends BackendManager {
   async editUser(updateData, userId) {
     return await this.sendRequest(`/edit`, {
       credentials: 'include',
-      method: 'POST', // ניתן לשנות ל-PATCH בהתאם למימוש השרת
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
