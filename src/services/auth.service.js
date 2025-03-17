@@ -35,7 +35,9 @@ class AuthService extends BackendManager {
     });
     if (response.headers.get('Authorization')) {
       Cookies.set('Authorization', response.headers.get('Authorization'), {
-        expires: 7 * 24 * 60 * 60 * 1000,
+        secure: true,
+        sameSite: 'none',
+        expires: 7,
       });
     }
     return response;
