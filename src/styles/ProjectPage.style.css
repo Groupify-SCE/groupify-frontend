@@ -1,0 +1,130 @@
+.project-page-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  font-family: Arial, sans-serif;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  direction: rtl;
+  text-align: right;
+}
+
+.project-box {
+  border: 2px solid #000;
+  padding: 1rem;
+  padding-bottom: 4rem; /* enough space at bottom for trash icon */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  cursor: pointer;
+  position: relative;
+  direction: ltr;
+  text-align: left;
+  height: 14rem;
+}
+
+.project-box:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.project-box:active {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* ADD BOX */
+.add-box {
+  border: 2px dashed #000;
+  position: relative; /* So we can absolutely position the plus sign */
+  cursor: pointer;
+  transition: background-color 0.2s;
+  /* We do NOT change the size of the box! Just position the + absolutely */
+}
+.add-box:hover {
+  background-color: #f0f0f0;
+}
+
+/* Absolutely position the + in the center */
+.plus-sign {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 4rem;
+  font-weight: bold;
+  pointer-events: none;
+  margin: 0;
+  line-height: 1;
+  text-align: center;
+}
+
+/* Fields */
+.project-box label {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+.project-box input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  outline: none;
+  width: 100%;
+}
+
+/* Delete Button (bottom-left) */
+.delete-button {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  width: 40px;
+  height: 40px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.delete-button:hover {
+  background-color: #333;
+}
+
+@media (max-width: 600px) {
+  .project-page-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dark Mode */
+.dark .project-page-container {
+  background-color: #1e1e2c;
+  color: #fff;
+}
+.dark .project-box {
+  border-color: #fff;
+}
+.dark .project-box input {
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  color: #fff;
+}
+.dark .project-box:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.dark .project-box:active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.dark .delete-button {
+  background-color: #444;
+}
+.dark .delete-button:hover {
+  background-color: #666;
+}
+.dark .add-box {
+  border-color: #fff;
+  color: #fff;
+}
+.dark .add-box:hover {
+  background-color: #333;
+}
