@@ -15,30 +15,46 @@ class ProjectService extends BackendManager {
   }
 
   async create() {
-    return await this.sendRequest('/create', {
+    return await this.sendRequest('create', {
       credentials: 'include',
       method: 'POST',
     });
   }
 
   async getAll() {
-    return await this.sendRequest('/get-all', {
+    return await this.sendRequest('get-all', {
       credentials: 'include',
       method: 'GET',
     });
   }
 
   async delete(projectId) {
-    return await this.sendRequest(`/delete/${projectId}`, {
+    return await this.sendRequest(`delete/${projectId}`, {
       credentials: 'include',
       method: 'DELETE',
     });
   }
 
   async get(projectId) {
-    return await this.sendRequest(`/get/${projectId}`, {
+    return await this.sendRequest(`get/${projectId}`, {
       credentials: 'include',
       method: 'GET',
+    });
+  }
+
+  async update(projectId, name, participants, group_size) {
+    return await this.sendRequest(`update`, {
+      credentials: 'include',
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        projectId,
+        name,
+        participants: Number(participants),
+        group_size: Number(group_size),
+      }),
     });
   }
 }
