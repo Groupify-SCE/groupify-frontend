@@ -32,12 +32,14 @@
   cursor: pointer;
   direction: ltr;
   text-align: left;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 .project-box:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 .project-box:active {
   transform: translateY(0);
@@ -51,8 +53,10 @@
   position: relative;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  transition: background-color 0.3s, border-color 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
 }
 .add-box:hover {
   background-color: #f0f0f0;
@@ -112,7 +116,9 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
 }
 .delete-button:hover {
   background-color: #c62828;
@@ -138,7 +144,7 @@
 .dark .project-box {
   background-color: #1e1e1e;
   border-color: #333;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 .dark .project-box label {
   color: #ffffff;

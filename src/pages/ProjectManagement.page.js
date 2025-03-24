@@ -75,7 +75,7 @@ function ProjectManagementPage() {
       <div className="main-content">
         {/* Left side: main area */}
         <div className="main-area">
-          {activeTab === 'criteria' && <CriteriaSection />}
+          {activeTab === 'criteria' && <CriteriaSection projectId={id} />}
         </div>
 
         {/* Right side: fields from your attached image, in English */}

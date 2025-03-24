@@ -1,11 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/CriteriaSection.style.css';
+import projectService from '../services/project.service';
+import { StatusCodes } from 'http-status-codes';
+import { toast } from 'react-toastify';
 
-const CriteriaSection = () => {
+const CriteriaSection = ({ projectId }) => {
   const [criteria, setCriteria] = useState([]);
 
-  const handleAddCriterion = () => {
-    // TODO: Implement add criterion
+  useEffect(() => {
+    handleGetCriteria();
+  });
+
+  const handleGetCriteria = async () => {
+    const result = await projectService.getAllCriteria(projectId);
+    if (result.status === StatusCodes.OK) {
+      const data = await result.json();
+      setCriteria(data.response);
+    } else {
+      toast.error('Failed to get criteria');
+    }
+  };
+
+  const handleAddCriterion = async () => {
+    const result = await projectService.addCriterion(
+      projectId,
+      `Criterion ${criteria.length + 1}`
+    );
+    if (result.status === StatusCodes.OK) {
+      handleGetCriteria();
+    } else {
+      toast.error('Failed to add criterion');
+    }
   };
 
   const handleDelete = (e, id) => {
@@ -18,11 +43,13 @@ const CriteriaSection = () => {
   };
 
   return (
-    <div>
+    <div className="criteria-page-container">
+      {/* Plus Box */}
       <div className="criterion-box add-box" onClick={handleAddCriterion}>
         <span className="plus-sign">+</span>
       </div>
 
+      {/* Criteria Boxes */}
       {criteria.map((criterion) => (
         <div
           className="criterion-box"
@@ -37,7 +64,7 @@ const CriteriaSection = () => {
             onClick={(e) => e.stopPropagation()}
           />
 
-          <label>Type</label>
+          <label>Range</label>
           <input
             type="text"
             value={`${criterion.range}`}
@@ -45,6 +72,7 @@ const CriteriaSection = () => {
             onClick={(e) => e.stopPropagation()}
           />
 
+          {/* Smaller trash icon at bottom-left */}
           <button
             className="delete-button"
             onClick={(e) => handleDelete(e, criterion._id)}
