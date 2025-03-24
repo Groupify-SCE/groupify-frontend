@@ -16,7 +16,7 @@ function ProjectPage() {
 
   const handleAddProject = async () => {
     const result = await projectService.create();
-    if (result.status == StatusCodes.OK) {
+    if (result.status === StatusCodes.OK) {
       handleGetAll();
       toast.success('Created Project Successfully');
     } else {
@@ -27,7 +27,7 @@ function ProjectPage() {
   const handleGetAll = async () => {
     const result = await projectService.getAll();
     const data = await result.json();
-    if (result.status == StatusCodes.OK) {
+    if (result.status === StatusCodes.OK) {
       setProjects(data.response);
     } else {
       toast.error(data.response);
@@ -41,7 +41,7 @@ function ProjectPage() {
         onConfirm={async () => {
           toast.dismiss();
           const result = await projectService.delete(id);
-          if (result.status == StatusCodes.OK) {
+          if (result.status === StatusCodes.OK) {
             toast.success('Deleted Project Successfully');
             setProjects((prev) => prev.filter((proj) => proj._id !== id));
           } else {
