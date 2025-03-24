@@ -25,12 +25,27 @@ function ProjectManagementPage() {
       if (result.status === StatusCodes.OK) {
         setProject(data.response);
       } else {
-        toast.error(data.response);
+        toast.error('Failed to fetch project details');
       }
     };
 
     fetchProject();
   }, [id]);
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const result = await projectService.update(
+      project._id,
+      project.name,
+      project.participants,
+      project.group_size
+    );
+    if (result.status === StatusCodes.OK) {
+      toast.success('Project updated successfully');
+    } else {
+      toast.error('Failed to update project');
+    }
+  };
 
   return (
     <div className="project-management-page">
@@ -90,6 +105,7 @@ function ProjectManagementPage() {
               onChange={(e) =>
                 setProject({ ...project, registrants: e.target.value })
               }
+              disabled
             />
           </div>
 
@@ -112,10 +128,13 @@ function ProjectManagementPage() {
               onChange={(e) =>
                 setProject({ ...project, preferences: e.target.value })
               }
+              disabled
             />
           </div>
 
-          <button className="big-button">Save</button>
+          <button className="big-button" onClick={handleUpdate}>
+            Save
+          </button>
           <button className="big-button">Create groups</button>
         </div>
       </div>
