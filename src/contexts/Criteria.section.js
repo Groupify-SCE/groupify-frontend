@@ -6,40 +6,93 @@ import { toast } from 'react-toastify';
 
 const CriteriaSection = ({ projectId }) => {
   const [criteria, setCriteria] = useState([]);
+  const [originalCriteria, setOriginalCriteria] = useState([]);
+  const [isDirty, setIsDirty] = useState(false);
 
   useEffect(() => {
     handleGetCriteria();
-  });
+  }, []);
+
+  useEffect(() => {
+    setIsDirty(JSON.stringify(criteria) !== JSON.stringify(originalCriteria));
+  }, [criteria, originalCriteria]);
 
   const handleGetCriteria = async () => {
-    const result = await projectService.getAllCriteria(projectId);
-    if (result.status === StatusCodes.OK) {
-      const data = await result.json();
-      setCriteria(data.response);
-    } else {
-      toast.error('Failed to get criteria');
+    try {
+      const result = await projectService.getAllCriteria(projectId);
+      if (result.status === StatusCodes.OK) {
+        const data = await result.json();
+        setCriteria(data.response);
+        setOriginalCriteria(data.response);
+      } else {
+        toast.error('Failed to get criteria');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Error fetching criteria');
     }
   };
 
   const handleAddCriterion = async () => {
-    const result = await projectService.addCriterion(
-      projectId,
-      `Criterion ${criteria.length + 1}`
-    );
-    if (result.status === StatusCodes.OK) {
-      handleGetCriteria();
-    } else {
-      toast.error('Failed to add criterion');
+    try {
+      const result = await projectService.addCriterion(
+        projectId,
+        `Criterion ${criteria.length + 1}`
+      );
+      if (result.status === StatusCodes.OK) {
+        handleGetCriteria();
+      } else {
+        toast.error('Failed to add criterion');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Error adding criterion');
     }
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = async (e, id) => {
     e.stopPropagation();
-    // TODO: Implement delete
+    try {
+      const result = await projectService.deleteCriterion(id);
+      if (result.status === StatusCodes.OK) {
+        handleGetCriteria();
+      } else {
+        toast.error('Failed to delete criterion');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Error deleting criterion');
+    }
   };
 
-  const handleCubeClick = (id) => {
-    // TODO: Implement cube click
+  const handleUpdate = async () => {
+    try {
+      const originalMap = originalCriteria.reduce((acc, curr) => {
+        acc[curr._id] = curr;
+        return acc;
+      }, {});
+      for (const criterion of criteria) {
+        if (
+          criterion.name !== originalMap[criterion._id].name ||
+          criterion.range !== originalMap[criterion._id].range
+        ) {
+          const result = await projectService.updateCriteria(
+            criterion._id,
+            criterion.name,
+            criterion.range
+          );
+          if (result.status !== StatusCodes.OK) {
+            toast.error('Failed to save criteria');
+            return;
+          }
+        }
+      }
+      toast.success('Criteria saved successfully');
+      handleGetCriteria();
+    } catch (err) {
+      console.error(err);
+      toast.error('Error updating criteria');
+    }
   };
 
   return (
@@ -51,23 +104,24 @@ const CriteriaSection = ({ projectId }) => {
 
       {/* Criteria Boxes */}
       {criteria.map((criterion) => (
-        <div
-          className="criterion-box"
-          key={criterion._id}
-          onClick={() => handleCubeClick(criterion._id)}
-        >
+        <div className="criterion-box" key={criterion._id}>
           <label>Criterion Name</label>
           <input
             type="text"
             value={criterion.name}
-            readOnly
             onClick={(e) => e.stopPropagation()}
+            onChange={(e) => {
+              const updatedCriteria = criteria.map((c) =>
+                c._id === criterion._id ? { ...c, name: e.target.value } : c
+              );
+              setCriteria(updatedCriteria);
+            }}
           />
 
           <label>Range</label>
           <input
             type="text"
-            value={`${criterion.range}`}
+            value={criterion.range}
             readOnly
             onClick={(e) => e.stopPropagation()}
           />
@@ -91,6 +145,12 @@ const CriteriaSection = ({ projectId }) => {
           </button>
         </div>
       ))}
+
+      {isDirty && (
+        <button className="update-button" onClick={handleUpdate}>
+          Save Changes
+        </button>
+      )}
     </div>
   );
 };

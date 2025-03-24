@@ -99,6 +99,30 @@
   border-color: #8c5ff2;
 }
 
+.update-button {
+  font-size: 1.5rem;
+  font-weight: bold;
+  position: absolute;
+  bottom: 1.5rem;
+  left: 2.5rem;
+  background-color: #8c5ff2;
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.update-button:hover {
+  background-color: #5534a3;
+  transform: scale(1.05);
+}
+
 /********************************************************
   DELETE BUTTON (Bottom-Left)
 ********************************************************/
