@@ -4,6 +4,7 @@ import '../styles/ProjectManagementPage.style.css';
 import projectService from '../services/project.service';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
+import CriteriaSection from '../contexts/Criteria.section';
 
 function ProjectManagementPage() {
   const { id } = useParams();
@@ -73,7 +74,9 @@ function ProjectManagementPage() {
 
       <div className="main-content">
         {/* Left side: main area */}
-        <div className="main-area"></div>
+        <div className="main-area">
+          {activeTab === 'criteria' && <CriteriaSection />}
+        </div>
 
         {/* Right side: fields from your attached image, in English */}
         <div className="project-details-sidebar">
