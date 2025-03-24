@@ -1,50 +1,65 @@
+/********************************************************
+  PROJECT PAGE CONTAINER
+********************************************************/
 .project-page-container {
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 1.5rem;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1rem;
   direction: rtl;
   text-align: right;
+  background-color: #f8f8f8; /* Subtle light background */
 }
 
+/********************************************************
+  PROJECT BOXES (Uniform Cubes)
+********************************************************/
 .project-box {
-  border: 2px solid #000;
+  height: 14rem;
   padding: 1rem;
-  padding-bottom: 4rem; /* enough space at bottom for trash icon */
+  padding-bottom: 4rem; /* space for delete button */
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  cursor: pointer;
   position: relative;
+  cursor: pointer;
   direction: ltr;
   text-align: left;
-  height: 14rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .project-box:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 .project-box:active {
-  background-color: rgba(0, 0, 0, 0.1);
+  transform: translateY(0);
 }
 
-/* ADD BOX */
+/********************************************************
+  ADD BOX (Plus Cube)
+********************************************************/
 .add-box {
-  border: 2px dashed #000;
-  position: relative; /* So we can absolutely position the plus sign */
-  cursor: pointer;
-  transition: background-color 0.2s;
-  /* We do NOT change the size of the box! Just position the + absolutely */
+  border: 2px dashed #8c5ff2;
+  position: relative;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: background-color 0.3s, border-color 0.3s;
 }
 .add-box:hover {
   background-color: #f0f0f0;
+  border-color: #6b3add;
 }
 
-/* Absolutely position the + in the center */
+/* Centered plus sign */
 .plus-sign {
   position: absolute;
   top: 50%;
@@ -52,79 +67,99 @@
   transform: translate(-50%, -50%);
   font-size: 4rem;
   font-weight: bold;
-  pointer-events: none;
-  margin: 0;
   line-height: 1;
-  text-align: center;
+  margin: 0;
+  pointer-events: none;
+  color: #8c5ff2;
 }
 
-/* Fields */
+/********************************************************
+  LABELS & INPUTS
+********************************************************/
 .project-box label {
-  font-weight: bold;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
 }
 .project-box input {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  outline: none;
   width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background-color: #fafafa;
+  color: #333;
+  transition: border-color 0.3s;
+}
+.project-box input:focus {
+  border-color: #8c5ff2;
 }
 
-/* Delete Button (bottom-left) */
+/********************************************************
+  DELETE BUTTON (Bottom-Left)
+********************************************************/
 .delete-button {
   position: absolute;
   bottom: 1rem;
   left: 1rem;
   width: 40px;
   height: 40px;
-  background-color: #000;
+  background-color: #d32f2f;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 .delete-button:hover {
-  background-color: #333;
+  background-color: #c62828;
+  transform: scale(1.05);
 }
 
+/********************************************************
+  RESPONSIVE ADJUSTMENTS
+********************************************************/
 @media (max-width: 600px) {
   .project-page-container {
     grid-template-columns: 1fr;
   }
 }
 
-/* Dark Mode */
+/********************************************************
+  DARK MODE
+********************************************************/
 .dark .project-page-container {
-  background-color: #1e1e2c;
-  color: #fff;
+  background-color: #121212;
 }
+
 .dark .project-box {
-  border-color: #fff;
+  background-color: #1e1e1e;
+  border-color: #333;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 .dark .project-box input {
   background-color: #2a2a2a;
-  border: 1px solid #444;
-  color: #fff;
+  border-color: #444;
+  color: #eaeaea;
 }
-.dark .project-box:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+.dark .project-box input:focus {
+  border-color: #8c5ff2;
 }
-.dark .project-box:active {
-  background-color: rgba(255, 255, 255, 0.1);
+
+.dark .add-box {
+  border-color: #8c5ff2;
+  background-color: #1e1e1e;
 }
+.dark .plus-sign {
+  color: #8c5ff2;
+}
+
 .dark .delete-button {
-  background-color: #444;
+  background-color: #b71c1c;
 }
 .dark .delete-button:hover {
-  background-color: #666;
-}
-.dark .add-box {
-  border-color: #fff;
-  color: #fff;
-}
-.dark .add-box:hover {
-  background-color: #333;
+  background-color: #a50e0e;
 }
