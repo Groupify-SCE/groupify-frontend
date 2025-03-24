@@ -85,7 +85,8 @@
   font-weight: 600;
   color: #555;
 }
-.criterion-box input {
+.criterion-box input,
+.criterion-box select {
   width: 100%;
   padding: 0.5rem;
   border: 1px solid #ddd;
@@ -95,7 +96,8 @@
   color: #333;
   transition: border-color 0.3s;
 }
-.criterion-box input:focus {
+.criterion-box input:focus,
+.criterion-box select:focus {
   border-color: #8c5ff2;
 }
 
@@ -115,7 +117,9 @@
   padding-left: 2rem;
   padding-right: 2rem;
   cursor: pointer;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
 }
 
 .update-button:hover {
@@ -170,12 +174,14 @@
 .dark .criterion-box label {
   color: #ffffff;
 }
-.dark .criterion-box input {
+.dark .criterion-box input,
+.dark .criterion-box select {
   background-color: #2a2a2a;
   border-color: #444;
   color: #eaeaea;
 }
-.dark .criterion-box input:focus {
+.dark .criterion-box input:focus,
+.dark .criterion-box select:focus {
   border-color: #8c5ff2;
 }
 

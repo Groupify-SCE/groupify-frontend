@@ -118,13 +118,23 @@ const CriteriaSection = ({ projectId }) => {
             }}
           />
 
-          <label>Range</label>
-          <input
-            type="text"
-            value={criterion.range}
-            readOnly
+          <label>Type</label>
+          <select
+            value={criterion.range.toString()}
             onClick={(e) => e.stopPropagation()}
-          />
+            onChange={(e) => {
+              const updatedValue = Number(e.target.value);
+              const updatedCriteria = criteria.map((c) =>
+                c._id === criterion._id ? { ...c, range: updatedValue } : c
+              );
+              setCriteria(updatedCriteria);
+            }}
+          >
+            <option value="1">Boolean</option>
+            <option value="10">0-10</option>
+            <option value="50">0-50</option>
+            <option value="100">0-100</option>
+          </select>
 
           {/* Smaller trash icon at bottom-left */}
           <button
