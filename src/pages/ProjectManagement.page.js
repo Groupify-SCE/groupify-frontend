@@ -83,6 +83,7 @@ function ProjectManagementPage() {
               type="text"
               value={project.name}
               onChange={(e) => setProject({ ...project, name: e.target.value })}
+              maxLength={100}
             />
           </div>
 
@@ -94,6 +95,7 @@ function ProjectManagementPage() {
               onChange={(e) =>
                 setProject({ ...project, participants: e.target.value })
               }
+              min={1}
             />
           </div>
 
@@ -117,6 +119,8 @@ function ProjectManagementPage() {
               onChange={(e) =>
                 setProject({ ...project, group_size: e.target.value })
               }
+              min={1}
+              max={project.participants}
             />
           </div>
 
@@ -128,6 +132,8 @@ function ProjectManagementPage() {
               onChange={(e) =>
                 setProject({ ...project, preferences: e.target.value })
               }
+              min={0}
+              max={project.group_size}
               disabled
             />
           </div>
