@@ -57,6 +57,42 @@ class ProjectService extends BackendManager {
       }),
     });
   }
+
+  async addCriterion(projectId) {
+    return await this.sendRequest(`criteria/add/${projectId}`, {
+      credentials: 'include',
+      method: 'POST',
+    });
+  }
+
+  async getAllCriteria(projectId) {
+    return await this.sendRequest(`criteria/get-all/${projectId}`, {
+      credentials: 'include',
+      method: 'GET',
+    });
+  }
+
+  async deleteCriterion(criterionId) {
+    return await this.sendRequest(`criteria/delete/${criterionId}`, {
+      credentials: 'include',
+      method: 'DELETE',
+    });
+  }
+
+  async updateCriteria(criterionId, name, range) {
+    return await this.sendRequest(`criteria/update`, {
+      credentials: 'include',
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        criterionId,
+        name,
+        range,
+      }),
+    });
+  }
 }
 
 const projectService = ProjectService.getInstance();
