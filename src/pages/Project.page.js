@@ -23,10 +23,15 @@ function ProjectPage() {
     e.stopPropagation();
     toast.info(
       <ConfirmDeletion
-        onConfirm={() => {
-          setProjects((prev) => prev.filter((proj) => proj.id !== id));
+        onConfirm={async () => {
           toast.dismiss();
-          toast.success('Project deleted!');
+          const result = await projectService.delete(id);
+          if (result.status == StatusCodes.OK) {
+            toast.success('Deleted Project Successfully');
+            setProjects((prev) => prev.filter((proj) => proj._id !== id));
+          } else {
+            toast.error('Failled deleting Project');
+          }
         }}
         onCancel={() => toast.dismiss()}
       />,
