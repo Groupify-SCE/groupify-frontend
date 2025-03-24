@@ -19,6 +19,16 @@ function ProjectPage() {
     }
   };
 
+  const handleGetAll = async () => {
+    const result = await projectService.getAll();
+    const data = await result.json();
+    if (result.status == StatusCodes.OK) {
+      setProjects(data.response);
+    } else {
+      toast.error(data.response);
+    }
+  };
+
   const handleDelete = (e, id) => {
     e.stopPropagation();
     toast.info(
