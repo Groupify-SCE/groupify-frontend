@@ -1,0 +1,354 @@
+.project-management-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  background-color: #f5f5f5;
+  border-bottom: 2px solid #ccc;
+  padding: 0.5rem 1rem;
+}
+.tab-button {
+  background: none;
+  border: none;
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+.tab-button:hover {
+  background-color: #e0e0e0;
+}
+.tab-button.active {
+  background-color: #ccc;
+}
+
+/* Main content: left area + right sidebar */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+.main-area {
+  flex: 3;
+  padding: 1rem;
+  border-right: 2px solid #ccc;
+}
+
+/* Criteria Tab */
+.criteria-tab {
+  height: 100%;
+}
+.criteria-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.criterion-box {
+  width: 150px;
+  height: 150px;
+  border: 2px solid #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: #fff;
+  transition: background-color 0.2s;
+  position: relative;
+}
+.criterion-box:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.criterion-box.add-box {
+  border: 2px dashed #000;
+  cursor: pointer;
+}
+.plus-sign {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 4rem;
+  line-height: 1;
+  margin: 0;
+  pointer-events: none;
+}
+
+/* Inside the newly created criterion box: 2 fields */
+.criterion-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.5rem;
+}
+.criterion-fields label {
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+.criterion-field-value {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Participants Tab */
+.participants-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.participants-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+.participants-table th,
+.participants-table td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+}
+.participants-table tbody tr:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+.add-participant-btn {
+  align-self: flex-end;
+  padding: 0.5rem 1rem;
+  background-color: #8c5ff2;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.add-participant-btn:hover {
+  background-color: #6b3add;
+}
+
+/* Edit Participants Tab */
+.edit-participants-tab {
+  /* placeholder */
+}
+
+/* Right Sidebar */
+.project-details-sidebar {
+  flex: 1;
+  padding: 1rem;
+}
+.project-details-sidebar h3 {
+  margin-top: 0;
+}
+.big-button {
+  display: block;
+  margin-top: 1rem;
+  padding: 0.6rem 1rem;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.big-button:hover {
+  background-color: #333;
+}
+
+/* Popup for adding criterion */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.popup-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  min-width: 300px;
+  max-width: 400px;
+  position: relative;
+}
+.popup-content h2 {
+  margin-top: 0;
+}
+.popup-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.popup-fields label {
+  font-weight: bold;
+}
+.popup-fields input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+}
+.popup-save-btn {
+  background-color: #8c5ff2;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.popup-save-btn:hover {
+  background-color: #6b3add;
+}
+
+/* Dark Mode */
+.dark .project-management-page {
+  background-color: #1e1e2c;
+  color: #fff;
+}
+.dark .tabs {
+  background-color: #2a2a2c;
+  border-bottom-color: #444;
+}
+.dark .tab-button {
+  color: #fff;
+}
+.dark .tab-button.active {
+  background-color: #444;
+}
+.dark .main-area {
+  border-right-color: #444;
+}
+.dark .criterion-box {
+  border-color: #fff;
+  background-color: #2a2a2c;
+}
+.dark .criterion-box.add-box {
+  border-color: #fff;
+  color: #fff;
+}
+.dark .criterion-box.add-box:hover {
+  background-color: #333;
+}
+.dark .criterion-fields label {
+  color: #fff;
+}
+.dark .criterion-field-value {
+  background-color: #444;
+  border-color: #666;
+  color: #fff;
+}
+.dark .participants-table th,
+.dark .participants-table td {
+  border-color: #444;
+}
+.dark .participants-table tbody tr:hover {
+  background-color: #333;
+}
+.dark .add-participant-btn {
+  background-color: #444;
+}
+.dark .add-participant-btn:hover {
+  background-color: #666;
+}
+.dark .project-details-sidebar {
+  background-color: #2a2a2c;
+}
+.dark .big-button {
+  background-color: #444;
+}
+.dark .big-button:hover {
+  background-color: #666;
+}
+.dark .popup-content {
+  background-color: #2a2a2c;
+  color: #fff;
+}
+.dark .popup-fields input {
+  background-color: #444;
+  border-color: #666;
+  color: #fff;
+}
+.dark .popup-save-btn {
+  background-color: #444;
+}
+.dark .popup-save-btn:hover {
+  background-color: #666;
+}
+.criterion-box {
+  width: 180px;
+  height: 180px;
+  border: 2px solid #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: #fff;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+/* Extra margin at the bottom of the fields so the text won't overlap the bottom button. */
+.criterion-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.5rem;
+  margin-bottom: 1.5rem; /* <-- Increased to 1.5rem so text is well above the bottom */
+}
+
+/* Delete button at the bottom-left, moved down a bit more. */
+.criterion-delete-btn {
+  position: absolute;
+  bottom: 0.3rem; /* smaller 'bottom' => physically closer to bottom edge */
+  left: 0.5rem;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.criterion-delete-btn:hover {
+  background-color: #333;
+}
+/* Enough bottom margin so the text doesn't overlap the delete button. */
+.criterion-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+/* The plus sign box is also 150x150 (same as .criterion-box), but dashed border. */
+.criterion-box.add-box {
+  border: 2px dashed #000;
+  cursor: pointer;
+}
+
+.popup-close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  font-weight: bold;
+  cursor: pointer;
+}
