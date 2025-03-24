@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import projectService from '../services/project.service';
@@ -10,12 +10,27 @@ function ProjectPage() {
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
 
+  useEffect(() => {
+    handleGetAll();
+  }, []);
+
   const handleAddProject = async () => {
     const result = await projectService.create();
     if (result.status == StatusCodes.OK) {
+      handleGetAll();
       toast.success('Created Project Successfully');
     } else {
       toast.error('Failled Creating Project');
+    }
+  };
+
+  const handleGetAll = async () => {
+    const result = await projectService.getAll();
+    const data = await result.json();
+    if (result.status == StatusCodes.OK) {
+      setProjects(data.response);
+    } else {
+      toast.error(data.response);
     }
   };
 
@@ -59,8 +74,8 @@ function ProjectPage() {
       {projects.map((project) => (
         <div
           className="project-box"
-          key={project.id}
-          onClick={() => handleCubeClick(project.id)}
+          key={project._id}
+          onClick={() => handleCubeClick(project._id)}
         >
           <label>Project Name</label>
           <input
@@ -72,7 +87,7 @@ function ProjectPage() {
 
           <label>Participants</label>
           <input
-            type="number"
+            type="text"
             value={`${project.registrants}/${project.participants}`}
             readOnly
             onClick={(e) => e.stopPropagation()}
@@ -81,7 +96,7 @@ function ProjectPage() {
           {/* Smaller trash icon at bottom-left */}
           <button
             className="delete-button"
-            onClick={(e) => handleDelete(e, project.id)}
+            onClick={(e) => handleDelete(e, project._id)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
