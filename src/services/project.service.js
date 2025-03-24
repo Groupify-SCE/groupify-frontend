@@ -20,6 +20,13 @@ class ProjectService extends BackendManager {
       method: 'POST',
     });
   }
+
+  async getAll() {
+    return await this.sendRequest('/get-all', {
+      credentials: 'include',
+      method: 'GET',
+    });
+  }
 }
 
 const projectService = ProjectService.getInstance();
