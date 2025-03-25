@@ -1,0 +1,279 @@
+/********************************************************
+  GLOBAL / BODY / ROOT
+********************************************************/
+/* Ensure the entire page can fill up large displays */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: #f8f8f8;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+}
+
+#root, .App {
+  width: 100%;
+  height: 100%;
+}
+
+/********************************************************
+  PROJECT MANAGEMENT PAGE
+********************************************************/
+.project-management-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/********************************************************
+  TABS (Top Navigation)
+********************************************************/
+.tabs {
+  display: flex;
+  padding: 0.5rem 1rem;
+  background: #fff;
+  border-bottom: 2px solid #ddd;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  margin-right: 1rem;
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  color: #333;
+}
+
+.tab-button:hover {
+  background-color: #eee;
+  transform: translateY(-2px);
+}
+
+.tab-button.active {
+  background-color: #8c5ff2;
+  color: #fff;
+}
+
+/********************************************************
+  MAIN CONTENT LAYOUT
+********************************************************/
+.main-content {
+  flex: 1; /* Fills remaining vertical space */
+  display: flex;
+  flex-direction: row;
+  overflow: hidden; /* So if content is large, we can scroll in sub-sections */
+}
+
+/* The left main area (flex: 3) */
+.main-area {
+  flex: 3;
+  padding: 1rem;
+  border-right: 2px solid #eee;
+  overflow-y: auto; /* Scroll if content is tall */
+  background: #fff; /* Keep a clean background */
+}
+
+/********************************************************
+  RIGHT SIDEBAR
+********************************************************/
+.project-details-sidebar {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto; /* Let sidebar scroll if it’s tall */
+  background: #fff;
+  border-left: 2px solid #eee;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.project-details-sidebar .detail-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.8rem;
+}
+
+.project-details-sidebar label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.project-details-sidebar input {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background: #fafafa;
+  color: #333;
+  transition: border-color 0.2s;
+}
+
+.project-details-sidebar input:focus {
+  border-color: #8c5ff2;
+}
+
+.big-button {
+  padding: 0.75rem 1.5rem;
+  margin-top: 0.5rem;
+  background-color: #8c5ff2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.big-button:hover {
+  background-color: #6b3add;
+  transform: translateY(-2px);
+}
+
+/********************************************************
+  CRITERIA / PARTICIPANTS / ETC. (Optional)
+********************************************************/
+/* If you have a criteria grid in the main area, style it similarly */
+.criteria-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.criterion-box {
+  width: 150px;
+  height: 150px;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.criterion-box:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  transform: translateY(-3px);
+}
+
+.criterion-box.add-box {
+  border: 2px dashed #8c5ff2;
+  cursor: pointer;
+}
+
+.plus-sign {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  font-weight: bold;
+  line-height: 1;
+  margin: 0;
+  pointer-events: none;
+  color: #8c5ff2;
+}
+
+/********************************************************
+  RESPONSIVE
+********************************************************/
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+  }
+  .main-area {
+    border-right: none;
+    border-bottom: 2px solid #eee;
+    flex: unset;
+  }
+  .project-details-sidebar {
+    border-left: none;
+    border-top: 2px solid #eee;
+    flex: unset;
+  }
+}
+
+/********************************************************
+  OPTIONAL DARK MODE
+********************************************************/
+.dark body,
+.dark html {
+  background: #121212;
+  color: #fff;
+}
+
+.dark .project-details-sidebar label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.dark .tabs {
+  background: #1e1e1e;
+  border-bottom-color: #444;
+}
+
+.dark .tab-button {
+  color: #eee;
+}
+.dark .tab-button:hover {
+  background-color: #333;
+}
+.dark .tab-button.active {
+  background-color: #8c5ff2;
+  color: #fff;
+}
+
+.dark .main-area {
+  background: #1e1e1e;
+  border-right-color: #444;
+}
+
+.dark .project-details-sidebar {
+  background: #1e1e1e;
+  border-left-color: #444;
+}
+
+.dark .project-details-sidebar input {
+  background: #2a2a2a;
+  border-color: #444;
+  color: #eaeaea;
+}
+
+.dark .big-button {
+  background-color: #8c5ff2;
+}
+.dark .big-button:hover {
+  background-color: #6b3add;
+}
+
+.dark .criterion-box {
+  background: #2a2a2a;
+  border-color: #444;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+.dark .criterion-box:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+
+.dark .criterion-box.add-box {
+  border-color: #8c5ff2;
+  background: #2a2a2a;
+}
+
+.dark .plus-sign {
+  color: #8c5ff2;
+}
