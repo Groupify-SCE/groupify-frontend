@@ -93,6 +93,15 @@ class ProjectService extends BackendManager {
       }),
     });
   }
+
+  async addParticipant(projectId, firstName, lastName, tz) {
+    return await this.sendRequest('participants/add', {
+      credentials: 'include',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ projectId, firstName, lastName, tz }),
+    });
+  }
 }
 
 const projectService = ProjectService.getInstance();
