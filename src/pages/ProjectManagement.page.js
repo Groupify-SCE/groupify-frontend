@@ -5,6 +5,7 @@ import projectService from '../services/project.service';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
 import CriteriaSection from '../contexts/Criteria.section';
+import ParticipantsSection from '../contexts/Participants.section';
 
 function ProjectManagementPage() {
   const { id } = useParams();
@@ -76,6 +77,9 @@ function ProjectManagementPage() {
         {/* Left side: main area */}
         <div className="main-area">
           {activeTab === 'criteria' && <CriteriaSection projectId={id} />}
+          {activeTab === 'editParticipants' && (
+            <ParticipantsSection projectId={id} />
+          )}
         </div>
 
         {/* Right side: fields from your attached image, in English */}
