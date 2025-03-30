@@ -102,6 +102,14 @@ class ProjectService extends BackendManager {
       body: JSON.stringify({ projectId, firstName, lastName, tz }),
     });
   }
+
+  async getAllParticipants(projectId) {
+    return await this.sendRequest(`participants/get-all/${projectId}`, {
+      credentials: 'include',
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 }
 
 const projectService = ProjectService.getInstance();

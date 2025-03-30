@@ -17,10 +17,10 @@ const ParticipantsSection = ({ projectId }) => {
 
   const fetchParticipants = async () => {
     try {
-      const result = await projectService.get(projectId);
+      const result = await projectService.getAllParticipants(projectId);
       const data = await result.json();
       if (result.status === StatusCodes.OK) {
-        setParticipants(data.response.participantList || []);
+        setParticipants(data.response || []);
       } else {
         toast.error('Failed to fetch participants');
       }
