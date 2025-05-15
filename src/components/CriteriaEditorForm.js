@@ -2,30 +2,72 @@ import React, { useState, useEffect } from 'react';
 import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
 import { toast } from 'react-toastify';
-import '../styles/CriteriaEditorForm.css'; // נוסיף גם CSS מותאם
+import projectService from '../services/project.service';
+import '../styles/CriteriaEditorForm.css';
 
 const CriteriaEditorForm = ({ participant, onClose, onSave }) => {
-  const [criteria, setCriteria] = useState({
-    teamwork: 0,
-    punctuality: 0,
-    initiative: 0,
-  });
+  const [criteriaDefs, setCriteriaDefs] = useState([]);
+  const [criteriaValues, setCriteriaValues] = useState({});
 
   useEffect(() => {
-    if (participant?.criteria) {
-      setCriteria(participant.criteria);
-    }
+    if (!participant?.projectId || !participant?._id) return;
+
+    projectService
+      .getAllCriteria(participant.projectId)
+      .then(async (res) => {
+        const data = await res.json(); 
+        const defs = data.response || []; 
+        setCriteriaDefs(defs);
+        console.log('🧩 criteriaDefs:', defs);
+
+        try {
+          const critJson = await projectService.getParticipantCriteria(
+            participant._id
+          );
+          const valuesList = critJson.response || [];
+
+          console.log('🎯 participant criteria response:', critJson);
+          console.log('🎯 valuesList:', valuesList);
+
+          const filled = {};
+          valuesList.forEach((item) => {
+            const key = item.criterion?.toString?.() || item.criterion;
+            console.log('🧪 mapping criterion:', key, '->', item.value);
+            filled[key] = item.value;
+          });
+
+          defs.forEach((c) => {
+            const idStr = c._id?.toString?.();
+            if (!(idStr in filled)) {
+              filled[idStr] = 0;
+            }
+          });
+
+          console.log('📦 filled values map:', filled);
+          setCriteriaValues(filled);
+        } catch (err) {
+          console.error('❌ Failed to load participant criteria:', err);
+          toast.error('Could not load existing criteria values');
+        }
+      })
+      .catch((err) => {
+        console.error('❌ Failed to load criteria definitions:', err);
+        toast.error('Could not load criteria');
+      });
   }, [participant]);
 
-  const handleChange = (field, value) => {
-    setCriteria((prev) => ({ ...prev, [field]: value }));
+  const handleChange = (id, value) => {
+    setCriteriaValues((prev) => ({ ...prev, [id]: value }));
   };
 
   const handleSave = async () => {
     try {
-      // await projectService.updateCriteria(participant._id, criteria);
+      await projectService.submitParticipantCriteria(
+        participant._id,
+        criteriaValues
+      );
       toast.success('Criteria saved!');
-      onSave(criteria);
+      onSave(criteriaValues);
       onClose();
     } catch (err) {
       console.error(err);
@@ -35,39 +77,24 @@ const CriteriaEditorForm = ({ participant, onClose, onSave }) => {
 
   return (
     <div className="criteria-form">
-      <div className="criteria-field">
-        <label>Teamwork</label>
-        <InputNumber
-          value={criteria.teamwork}
-          onValueChange={(e) => handleChange('teamwork', e.value)}
-          min={0}
-          max={10}
-          showButtons
-          inputClassName="input-compact"
-        />
-      </div>
-      <div className="criteria-field">
-        <label>Punctuality</label>
-        <InputNumber
-          value={criteria.punctuality}
-          onValueChange={(e) => handleChange('punctuality', e.value)}
-          min={0}
-          max={10}
-          showButtons
-          inputClassName="input-compact"
-        />
-      </div>
-      <div className="criteria-field">
-        <label>Initiative</label>
-        <InputNumber
-          value={criteria.initiative}
-          onValueChange={(e) => handleChange('initiative', e.value)}
-          min={0}
-          max={10}
-          showButtons
-          inputClassName="input-compact"
-        />
-      </div>
+      {Array.isArray(criteriaDefs) &&
+        criteriaDefs.map((c) => {
+          const idStr = c._id?.toString?.();
+          return (
+            <div className="criteria-field" key={idStr}>
+              <label>{c.name}</label>
+              <InputNumber
+                value={criteriaValues?.[idStr] ?? 0}
+                onValueChange={(e) => handleChange(idStr, e.value)}
+                min={0}
+                max={c.range}
+                showButtons
+                inputClassName="input-compact"
+              />
+            </div>
+          );
+        })}
+
       <div className="button-wrapper">
         <Button
           label="Save"
