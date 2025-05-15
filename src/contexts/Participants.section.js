@@ -127,7 +127,6 @@ const ParticipantsSection = ({ projectId }) => {
             participant={selectedParticipant}
             onClose={() => setCriteriaDialogVisible(false)}
             onSave={(updatedCriteria) => {
-              // עדכון הקריטריונים במצב המקומי
               setParticipants((prev) =>
                 prev.map((p) =>
                   p._id === selectedParticipant._id
