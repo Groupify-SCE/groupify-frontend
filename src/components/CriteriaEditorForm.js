@@ -15,8 +15,8 @@ const CriteriaEditorForm = ({ participant, onClose, onSave }) => {
     projectService
       .getAllCriteria(participant.projectId)
       .then(async (res) => {
-        const data = await res.json(); 
-        const defs = data.response || []; 
+        const data = await res.json();
+        const defs = data.response || [];
         setCriteriaDefs(defs);
         console.log('🧩 criteriaDefs:', defs);
 
