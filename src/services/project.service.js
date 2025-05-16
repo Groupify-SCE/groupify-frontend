@@ -110,6 +110,32 @@ class ProjectService extends BackendManager {
       headers: { 'Content-Type': 'application/json' },
     });
   }
+
+  async getParticipantCriteria(participantId) {
+    const res = await this.sendRequest(
+      `participants/criteria/get/${participantId}`,
+      {
+        credentials: 'include',
+        method: 'GET',
+      }
+    );
+
+    return await res.json();
+  }
+
+  async submitParticipantCriteria(participantId, criteria) {
+    return await this.sendRequest(
+      `participants/criteria/update/${participantId}`,
+      {
+        credentials: 'include',
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ criteria }),
+      }
+    );
+  }
 }
 
 const projectService = ProjectService.getInstance();

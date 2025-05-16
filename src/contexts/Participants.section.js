@@ -1,4 +1,3 @@
-// ✅ Updated Participants.section.js with PrimeReact DataTable
 import React, { useState, useEffect } from 'react';
 import '../styles/ParticipantsSection.style.css';
 import projectService from '../services/project.service';
@@ -15,6 +14,8 @@ import { ConfirmDialog } from 'primereact/confirmdialog';
 
 const ParticipantsSection = ({ projectId }) => {
   const [participants, setParticipants] = useState([]);
+  const [criteriaDialogVisible, setCriteriaDialogVisible] = useState(false);
+  const [selectedParticipant, setSelectedParticipant] = useState(null);
 
   useEffect(() => {
     fetchParticipants();
@@ -46,20 +47,9 @@ const ParticipantsSection = ({ projectId }) => {
     );
   };
 
-  const statusBodyTemplate = (rowData) => {
-    return rowData.status === 'Active' ? '✔️ Active' : '❌ Inactive';
-  };
-
-  const statusEditor = (options) => {
-    return (
-      <select
-        value={options.value}
-        onChange={(e) => options.editorCallback(e.target.value)}
-      >
-        <option value="Active">Active</option>
-        <option value="Inactive">Inactive</option>
-      </select>
-    );
+  const openCriteriaDialog = (participant) => {
+    setSelectedParticipant(participant);
+    setCriteriaDialogVisible(true);
   };
 
   const onRowEditComplete = async (e) => {
@@ -69,7 +59,6 @@ const ParticipantsSection = ({ projectId }) => {
     setParticipants(updated);
 
     try {
-      // שלחי עדכון לשרת כאן
       // await projectService.updateParticipant(projectId, newData);
       toast.success('Participant updated');
     } catch (err) {
@@ -137,10 +126,15 @@ const ParticipantsSection = ({ projectId }) => {
           style={{ width: '25%' }}
         />
         <Column
-          field="status"
-          header="Status"
-          body={statusBodyTemplate}
-          editor={statusEditor}
+          header="Criteria"
+          body={(rowData) => (
+            <Button
+              label="Edit"
+              icon="pi pi-pencil"
+              className="p-button-text"
+              onClick={() => openCriteriaDialog(rowData)}
+            />
+          )}
           style={{ width: '15%' }}
         />
         <Column
