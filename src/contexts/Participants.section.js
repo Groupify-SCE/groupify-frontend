@@ -97,6 +97,7 @@ const ParticipantsSection = ({ projectId }) => {
         <Column
           field="firstName"
           header="First Name"
+          editor={textEditor}
           body={(rowData) => (
             <div
               style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
