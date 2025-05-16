@@ -9,11 +9,14 @@ import { Column } from 'primereact/column';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import CriteriaEditorForm from '../components/CriteriaEditorForm';
+import { confirmDialog } from 'primereact/confirmdialog';
+import { ConfirmDialog } from 'primereact/confirmdialog';
 
 const ParticipantsSection = ({ projectId }) => {
   const [participants, setParticipants] = useState([]);
   const [criteriaDialogVisible, setCriteriaDialogVisible] = useState(false);
   const [selectedParticipant, setSelectedParticipant] = useState(null);
+  const [deletedIds, setDeletedIds] = useState([]);
 
   useEffect(() => {
     fetchParticipants();
@@ -64,6 +67,28 @@ const ParticipantsSection = ({ projectId }) => {
     }
   };
 
+  const confirmDelete = (participant) => {
+    confirmDialog({
+      message: `Are you sure you want to delete ${participant.firstName} ${participant.lastName}?`,
+      header: 'Confirm Delete',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Yes',
+      rejectLabel: 'No',
+      accept: async () => {
+        try {
+          await projectService.deleteParticipant(projectId, participant._id);
+          setParticipants((prev) =>
+            prev.filter((p) => p._id !== participant._id)
+          );
+          toast.success('Participant deleted successfully');
+        } catch (err) {
+          console.error(err);
+          toast.error('Failed to delete participant');
+        }
+      },
+    });
+  };
+
   return (
     <div className="participants-section">
       <AddParticipantForm
@@ -72,7 +97,7 @@ const ParticipantsSection = ({ projectId }) => {
       />
 
       <DataTable
-        value={participants}
+        value={participants.filter((p) => !deletedIds.includes(p._id))}
         editMode="row"
         dataKey="_id"
         onRowEditComplete={onRowEditComplete}
@@ -82,8 +107,22 @@ const ParticipantsSection = ({ projectId }) => {
           field="firstName"
           header="First Name"
           editor={textEditor}
+          body={(rowData) => (
+            <div
+              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+            >
+              <Button
+                icon="pi pi-times"
+                className="p-button-rounded p-button-text p-button-danger"
+                style={{ width: '1.5rem', height: '1.5rem' }}
+                onClick={() => confirmDelete(rowData)}
+              />
+              <span>{rowData.firstName}</span>
+            </div>
+          )}
           style={{ width: '25%' }}
         />
+
         <Column
           field="lastName"
           header="Last Name"
@@ -138,6 +177,7 @@ const ParticipantsSection = ({ projectId }) => {
           />
         )}
       </Dialog>
+      <ConfirmDialog />
     </div>
   );
 };
