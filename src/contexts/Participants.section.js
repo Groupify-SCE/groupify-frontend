@@ -16,6 +16,7 @@ const ParticipantsSection = ({ projectId }) => {
   const [participants, setParticipants] = useState([]);
   const [criteriaDialogVisible, setCriteriaDialogVisible] = useState(false);
   const [selectedParticipant, setSelectedParticipant] = useState(null);
+  const [deletedIds, setDeletedIds] = useState([]);
 
   useEffect(() => {
     fetchParticipants();
@@ -74,8 +75,7 @@ const ParticipantsSection = ({ projectId }) => {
       acceptLabel: 'Yes',
       rejectLabel: 'No',
       accept: () => {
-        console.log('Approved delete for:', participant._id);
-        // בשלב הבא נוסיף את המחיקה מה-state
+        setDeletedIds((prev) => [...prev, participant._id]);
       },
     });
   };
@@ -88,7 +88,7 @@ const ParticipantsSection = ({ projectId }) => {
       />
 
       <DataTable
-        value={participants}
+        value={participants.filter((p) => !deletedIds.includes(p._id))}
         editMode="row"
         dataKey="_id"
         onRowEditComplete={onRowEditComplete}
