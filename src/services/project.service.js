@@ -136,6 +136,16 @@ class ProjectService extends BackendManager {
       }
     );
   }
+
+  async deleteParticipant(projectId, participantId) {
+    return await this.sendRequest(
+      `participants/delete/${projectId}/${participantId}`,
+      {
+        credentials: 'include',
+        method: 'DELETE',
+      }
+    );
+  }
 }
 
 const projectService = ProjectService.getInstance();

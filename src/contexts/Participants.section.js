@@ -74,8 +74,17 @@ const ParticipantsSection = ({ projectId }) => {
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Yes',
       rejectLabel: 'No',
-      accept: () => {
-        setDeletedIds((prev) => [...prev, participant._id]);
+      accept: async () => {
+        try {
+          await projectService.deleteParticipant(projectId, participant._id);
+          setParticipants((prev) =>
+            prev.filter((p) => p._id !== participant._id)
+          );
+          toast.success('Participant deleted successfully');
+        } catch (err) {
+          console.error(err);
+          toast.error('Failed to delete participant');
+        }
       },
     });
   };
