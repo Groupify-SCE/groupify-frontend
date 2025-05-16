@@ -7,6 +7,11 @@ import { toast } from 'react-toastify';
 import AddParticipantForm from '../components/AddParticipantForm';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { Dialog } from 'primereact/dialog';
+import { Button } from 'primereact/button';
+import CriteriaEditorForm from '../components/CriteriaEditorForm';
+import { confirmDialog } from 'primereact/confirmdialog';
+import { ConfirmDialog } from 'primereact/confirmdialog';
 
 const ParticipantsSection = ({ projectId }) => {
   const [participants, setParticipants] = useState([]);
@@ -72,6 +77,20 @@ const ParticipantsSection = ({ projectId }) => {
     }
   };
 
+  const confirmDelete = (participant) => {
+    confirmDialog({
+      message: `Are you sure you want to delete ${participant.firstName} ${participant.lastName}?`,
+      header: 'Confirm Delete',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Yes',
+      rejectLabel: 'No',
+      accept: () => {
+        console.log('Approved delete for:', participant._id);
+        // בשלב הבא נוסיף את המחיקה מה-state
+      },
+    });
+  };
+
   return (
     <div className="participants-section">
       <AddParticipantForm
@@ -89,9 +108,22 @@ const ParticipantsSection = ({ projectId }) => {
         <Column
           field="firstName"
           header="First Name"
-          editor={textEditor}
+          body={(rowData) => (
+            <div
+              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+            >
+              <Button
+                icon="pi pi-times"
+                className="p-button-rounded p-button-text p-button-danger"
+                style={{ width: '1.5rem', height: '1.5rem' }}
+                onClick={() => confirmDelete(rowData)}
+              />
+              <span>{rowData.firstName}</span>
+            </div>
+          )}
           style={{ width: '25%' }}
         />
+
         <Column
           field="lastName"
           header="Last Name"
@@ -117,6 +149,31 @@ const ParticipantsSection = ({ projectId }) => {
           bodyStyle={{ textAlign: 'center' }}
         />
       </DataTable>
+
+      <Dialog
+        header="Edit Criteria"
+        visible={criteriaDialogVisible}
+        style={{ width: '400px' }}
+        onHide={() => setCriteriaDialogVisible(false)}
+        modal
+      >
+        {selectedParticipant && (
+          <CriteriaEditorForm
+            participant={selectedParticipant}
+            onClose={() => setCriteriaDialogVisible(false)}
+            onSave={(updatedCriteria) => {
+              setParticipants((prev) =>
+                prev.map((p) =>
+                  p._id === selectedParticipant._id
+                    ? { ...p, criteria: updatedCriteria }
+                    : p
+                )
+              );
+            }}
+          />
+        )}
+      </Dialog>
+      <ConfirmDialog />
     </div>
   );
 };
