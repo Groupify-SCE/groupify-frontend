@@ -137,7 +137,6 @@ class ProjectService extends BackendManager {
     );
   }
 
-
   async updateAllParticipants(projectId, participants) {
     return await this.sendRequest(`participants/update-all/${projectId}`, {
       credentials: 'include',

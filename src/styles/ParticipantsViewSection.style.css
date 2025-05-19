@@ -1,0 +1,157 @@
+/* ParticipantsViewSection.style.css */
+
+.participants-section {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: auto; /* ensures horizontal scroll if needed */
+  }
+  
+  .p-datatable {
+    width: 100%;
+    min-width: 600px;
+    font-size: 0.95rem;
+    border-collapse: collapse;
+  }
+  
+  .p-datatable th,
+  .p-datatable td {
+    padding: 0.75rem;
+    text-align: center;
+  }
+  
+  .p-datatable th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+  }
+  
+  .p-datatable tbody tr:hover {
+    background-color: #f4f4f4;
+  }
+  
+  .status-check {
+    color: green;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .status-x {
+    color: red;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  @media (max-width: 768px) {
+    .participants-section {
+      padding: 0.5rem;
+    }
+    .p-datatable th,
+    .p-datatable td {
+      padding: 0.5rem;
+      font-size: 0.85rem;
+    }
+  }
+  
+  /* חידוד עיצוב לעמודות */
+.column-header,
+.column-body {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* שינוי עיצוב טבלה שתהיה רספונסיבית ונקייה */
+.participants-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  overflow-x: auto;
+}
+
+/* התייחסות לעיצוב רספונסיבי */
+@media (max-width: 768px) {
+  .participants-section {
+    padding: 0.5rem;
+  }
+
+  .column-header,
+  .column-body {
+    font-size: 0.85rem;
+    padding: 0.4rem;
+  }
+
+  .participants-table {
+    font-size: 0.85rem;
+    min-width: 100%;
+  }
+}
+
+.styled-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .styled-table {
+    width: 100%;
+    min-width: 600px;
+    border-collapse: collapse;
+  }
+  
+  .styled-table .header {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    text-align: left;
+  }
+  
+  .styled-table .cell {
+    padding: 0.75rem;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .status-icon.success {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .status-icon.failure {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .styled-table-wrapper {
+    overflow-x: auto;
+    margin-top: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+  
+  .styled-table th,
+  .styled-table td {
+    text-align: center;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+  }
+  
+  .column {
+    text-align: center;
+  }
+  
+  .status-check {
+    color: green;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .status-x {
+    color: red;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
