@@ -103,3 +103,25 @@
 .add-participant-form button:hover {
   background-color: #6e46d6;
 }
+
+.participants-table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.participants-section {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 100%;                
+  max-width: 100vw;           
+  box-sizing: border-box;     
+}
+
+.participants-table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+  box-sizing: border-box;
+}

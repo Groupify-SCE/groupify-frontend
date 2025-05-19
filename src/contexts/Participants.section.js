@@ -107,63 +107,64 @@ const ParticipantsSection = ({ projectId }) => {
         onParticipantAdded={fetchParticipants}
       />
 
-      <DataTable
-        value={participants.filter((p) => !deletedIds.includes(p._id))}
-        editMode="row"
-        dataKey="_id"
-        onRowEditComplete={onRowEditComplete}
-        tableStyle={{ minWidth: '50rem' }}
-      >
-        <Column
-          field="firstName"
-          header="First Name"
-          editor={textEditor}
-          body={(rowData) => (
-            <div
-              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-            >
+      <div className="participants-table-wrapper">
+        <DataTable
+          value={participants.filter((p) => !deletedIds.includes(p._id))}
+          editMode="row"
+          dataKey="_id"
+          onRowEditComplete={onRowEditComplete}
+          tableStyle={{ minWidth: '50rem' }}
+        >
+          <Column
+            field="firstName"
+            header="First Name"
+            editor={textEditor}
+            body={(rowData) => (
+              <div
+                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+              >
+                <Button
+                  icon="pi pi-times"
+                  className="p-button-rounded p-button-text p-button-danger"
+                  style={{ width: '1.5rem', height: '1.5rem' }}
+                  onClick={() => confirmDelete(rowData)}
+                />
+                <span>{rowData.firstName}</span>
+              </div>
+            )}
+            style={{ width: '25%' }}
+          />
+          <Column
+            field="lastName"
+            header="Last Name"
+            editor={textEditor}
+            style={{ width: '25%' }}
+          />
+          <Column
+            field="tz"
+            header="ID"
+            editor={textEditor}
+            style={{ width: '25%' }}
+          />
+          <Column
+            header="Criteria"
+            body={(rowData) => (
               <Button
-                icon="pi pi-times"
-                className="p-button-rounded p-button-text p-button-danger"
-                style={{ width: '1.5rem', height: '1.5rem' }}
-                onClick={() => confirmDelete(rowData)}
+                label="Edit"
+                icon="pi pi-pencil"
+                className="p-button-text"
+                onClick={() => openCriteriaDialog(rowData)}
               />
-              <span>{rowData.firstName}</span>
-            </div>
-          )}
-          style={{ width: '25%' }}
-        />
-
-        <Column
-          field="lastName"
-          header="Last Name"
-          editor={textEditor}
-          style={{ width: '25%' }}
-        />
-        <Column
-          field="tz"
-          header="ID"
-          editor={textEditor}
-          style={{ width: '25%' }}
-        />
-        <Column
-          header="Criteria"
-          body={(rowData) => (
-            <Button
-              label="Edit"
-              icon="pi pi-pencil"
-              className="p-button-text"
-              onClick={() => openCriteriaDialog(rowData)}
-            />
-          )}
-          style={{ width: '15%' }}
-        />
-        <Column
-          rowEditor
-          headerStyle={{ width: '10%' }}
-          bodyStyle={{ textAlign: 'center' }}
-        />
-      </DataTable>
+            )}
+            style={{ width: '15%' }}
+          />
+          <Column
+            rowEditor
+            headerStyle={{ width: '10%' }}
+            bodyStyle={{ textAlign: 'center' }}
+          />
+        </DataTable>
+      </div>
 
       <Dialog
         header="Edit Criteria"
@@ -188,6 +189,7 @@ const ParticipantsSection = ({ projectId }) => {
           />
         )}
       </Dialog>
+
       <Button
         label="Save"
         icon="pi pi-save"
