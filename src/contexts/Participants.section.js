@@ -58,13 +58,6 @@ const ParticipantsSection = ({ projectId }) => {
     const updated = [...participants];
     updated[index] = newData;
     setParticipants(updated);
-
-    try {
-      // await projectService.updateParticipant(projectId, newData);
-      toast.success('Participant updated');
-    } catch (err) {
-      toast.error('Failed to update participant');
-    }
   };
 
   const confirmDelete = (participant) => {
@@ -87,6 +80,24 @@ const ParticipantsSection = ({ projectId }) => {
         }
       },
     });
+  };
+
+  const handleSave = async () => {
+    try {
+      const response = await projectService.updateAllParticipants(
+        projectId,
+        participants
+      );
+
+      if (response.status === StatusCodes.OK) {
+        toast.success('Participants list saved successfully');
+      } else {
+        toast.error('Failed to save participants list');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Error saving participants list');
+    }
   };
 
   return (
@@ -177,6 +188,13 @@ const ParticipantsSection = ({ projectId }) => {
           />
         )}
       </Dialog>
+      <Button
+        label="Save"
+        icon="pi pi-save"
+        className="p-button-success"
+        style={{ marginTop: '1rem', alignSelf: 'flex-start' }}
+        onClick={handleSave}
+      />
       <ConfirmDialog />
     </div>
   );

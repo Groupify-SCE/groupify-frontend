@@ -137,6 +137,18 @@ class ProjectService extends BackendManager {
     );
   }
 
+
+  async updateAllParticipants(projectId, participants) {
+    return await this.sendRequest(`participants/update-all/${projectId}`, {
+      credentials: 'include',
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ participants }),
+    });
+  }
+
   async deleteParticipant(projectId, participantId) {
     return await this.sendRequest(
       `participants/delete/${projectId}/${participantId}`,
