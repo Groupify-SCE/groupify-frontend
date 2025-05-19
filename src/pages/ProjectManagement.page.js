@@ -6,6 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
 import CriteriaSection from '../contexts/Criteria.section';
 import ParticipantsSection from '../contexts/Participants.section';
+import ParticipantsViewSection from '../contexts/ParticipantsView.Section';
 
 function ProjectManagementPage() {
   const { id } = useParams();
@@ -60,8 +61,8 @@ function ProjectManagementPage() {
           Criteria
         </button>
         <button
-          className={`tab-button ${activeTab === 'participants' ? 'active' : ''}`}
-          onClick={() => setActiveTab('participants')}
+          className={`tab-button ${activeTab === 'viewParticipants' ? 'active' : ''}`}
+          onClick={() => setActiveTab('viewParticipants')}
         >
           Participants
         </button>
@@ -79,6 +80,9 @@ function ProjectManagementPage() {
           {activeTab === 'criteria' && <CriteriaSection projectId={id} />}
           {activeTab === 'editParticipants' && (
             <ParticipantsSection projectId={id} />
+          )}
+          {activeTab === 'viewParticipants' && (
+            <ParticipantsViewSection projectId={id} />
           )}
         </div>
 
