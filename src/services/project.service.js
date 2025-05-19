@@ -137,6 +137,7 @@ class ProjectService extends BackendManager {
     );
   }
 
+
   async updateAllParticipants(projectId, participants) {
     return await this.sendRequest(`participants/update-all/${projectId}`, {
       credentials: 'include',
@@ -146,6 +147,16 @@ class ProjectService extends BackendManager {
       },
       body: JSON.stringify({ participants }),
     });
+  }
+
+  async deleteParticipant(projectId, participantId) {
+    return await this.sendRequest(
+      `participants/delete/${projectId}/${participantId}`,
+      {
+        credentials: 'include',
+        method: 'DELETE',
+      }
+    );
   }
 }
 

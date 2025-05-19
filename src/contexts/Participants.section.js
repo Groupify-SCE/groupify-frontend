@@ -16,6 +16,7 @@ const ParticipantsSection = ({ projectId }) => {
   const [participants, setParticipants] = useState([]);
   const [criteriaDialogVisible, setCriteriaDialogVisible] = useState(false);
   const [selectedParticipant, setSelectedParticipant] = useState(null);
+  const [deletedIds, setDeletedIds] = useState([]);
 
   useEffect(() => {
     fetchParticipants();
@@ -66,9 +67,17 @@ const ParticipantsSection = ({ projectId }) => {
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Yes',
       rejectLabel: 'No',
-      accept: () => {
-        console.log('Approved delete for:', participant._id);
-        // בשלב הבא נוסיף את המחיקה מה-state
+      accept: async () => {
+        try {
+          await projectService.deleteParticipant(projectId, participant._id);
+          setParticipants((prev) =>
+            prev.filter((p) => p._id !== participant._id)
+          );
+          toast.success('Participant deleted successfully');
+        } catch (err) {
+          console.error(err);
+          toast.error('Failed to delete participant');
+        }
       },
     });
   };
@@ -99,7 +108,7 @@ const ParticipantsSection = ({ projectId }) => {
       />
 
       <DataTable
-        value={participants}
+        value={participants.filter((p) => !deletedIds.includes(p._id))}
         editMode="row"
         dataKey="_id"
         onRowEditComplete={onRowEditComplete}
