@@ -180,13 +180,6 @@ class ProjectService extends BackendManager {
       }),
     });
   }
-
-  async createGroups(projectId) {
-    return await this.sendRequest(`create-groups/${projectId}`, {
-      credentials: 'include',
-      method: 'POST',
-    });
-  }
 }
 
 const projectService = ProjectService.getInstance();
