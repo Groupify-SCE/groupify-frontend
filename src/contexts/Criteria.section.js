@@ -9,14 +9,17 @@ const CriteriaSection = ({ projectId }) => {
   const [originalCriteria, setOriginalCriteria] = useState([]);
   const [isDirty, setIsDirty] = useState(false);
 
+  // Fetch once on mount or whenever projectId changes
   useEffect(() => {
     handleGetCriteria();
-  });
+  }, [projectId]);
 
+  // Track whether the user has made unsaved edits
   useEffect(() => {
     setIsDirty(JSON.stringify(criteria) !== JSON.stringify(originalCriteria));
   }, [criteria, originalCriteria]);
 
+  // Fetch the list of criteria from the server
   const handleGetCriteria = async () => {
     try {
       const result = await projectService.getAllCriteria(projectId);
@@ -33,6 +36,7 @@ const CriteriaSection = ({ projectId }) => {
     }
   };
 
+  // Add a new empty criterion
   const handleAddCriterion = async () => {
     try {
       const result = await projectService.addCriterion(
@@ -50,6 +54,7 @@ const CriteriaSection = ({ projectId }) => {
     }
   };
 
+  // Delete a criterion by ID
   const handleDelete = async (e, id) => {
     e.stopPropagation();
     try {
@@ -65,6 +70,7 @@ const CriteriaSection = ({ projectId }) => {
     }
   };
 
+  // Save any edits back to the server
   const handleUpdate = async () => {
     try {
       const originalMap = originalCriteria.reduce((acc, curr) => {
@@ -72,10 +78,9 @@ const CriteriaSection = ({ projectId }) => {
         return acc;
       }, {});
       for (const criterion of criteria) {
-        if (
-          criterion.name !== originalMap[criterion._id].name ||
-          criterion.range !== originalMap[criterion._id].range
-        ) {
+        const orig = originalMap[criterion._id];
+        if (!orig) continue;
+        if (criterion.name !== orig.name || criterion.range !== orig.range) {
           const result = await projectService.updateCriteria(
             criterion._id,
             criterion.name,
@@ -97,12 +102,12 @@ const CriteriaSection = ({ projectId }) => {
 
   return (
     <div className="criteria-page-container">
-      {/* Plus Box */}
+      {/* Add-box */}
       <div className="criterion-box add-box" onClick={handleAddCriterion}>
         <span className="plus-sign">+</span>
       </div>
 
-      {/* Criteria Boxes */}
+      {/* List of criteria */}
       {criteria.map((criterion) => (
         <div className="criterion-box" key={criterion._id}>
           <label>Criterion Name</label>
@@ -111,10 +116,11 @@ const CriteriaSection = ({ projectId }) => {
             value={criterion.name}
             onClick={(e) => e.stopPropagation()}
             onChange={(e) => {
-              const updatedCriteria = criteria.map((c) =>
-                c._id === criterion._id ? { ...c, name: e.target.value } : c
+              setCriteria((prev) =>
+                prev.map((c) =>
+                  c._id === criterion._id ? { ...c, name: e.target.value } : c
+                )
               );
-              setCriteria(updatedCriteria);
             }}
           />
 
@@ -123,11 +129,12 @@ const CriteriaSection = ({ projectId }) => {
             value={criterion.range.toString()}
             onClick={(e) => e.stopPropagation()}
             onChange={(e) => {
-              const updatedValue = Number(e.target.value);
-              const updatedCriteria = criteria.map((c) =>
-                c._id === criterion._id ? { ...c, range: updatedValue } : c
+              const newRange = Number(e.target.value);
+              setCriteria((prev) =>
+                prev.map((c) =>
+                  c._id === criterion._id ? { ...c, range: newRange } : c
+                )
               );
-              setCriteria(updatedCriteria);
             }}
           >
             <option value="1">Boolean</option>
@@ -136,7 +143,7 @@ const CriteriaSection = ({ projectId }) => {
             <option value="100">0-100</option>
           </select>
 
-          {/* Smaller trash icon at bottom-left */}
+          {/* Delete button */}
           <button
             className="delete-button"
             onClick={(e) => handleDelete(e, criterion._id)}
@@ -156,6 +163,7 @@ const CriteriaSection = ({ projectId }) => {
         </div>
       ))}
 
+      {/* Save button appears only when edits exist */}
       {isDirty && (
         <button className="update-button" onClick={handleUpdate}>
           Save Changes
