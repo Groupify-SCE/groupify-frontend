@@ -11,7 +11,7 @@ const CriteriaSection = ({ projectId }) => {
 
   useEffect(() => {
     handleGetCriteria();
-  }, []);
+  });
 
   useEffect(() => {
     setIsDirty(JSON.stringify(criteria) !== JSON.stringify(originalCriteria));
