@@ -59,6 +59,7 @@ function ProjectManagementPage() {
       if (result.status === StatusCodes.OK) {
         toast.success('Groups created successfully');
         setProject({ ...project, groups: true });
+        navigate(`/groups/${id}`);
       } else {
         toast.error('Failed to create groups');
       }
