@@ -1,0 +1,127 @@
+/********************************************************
+  PARTICIPANTS SECTION CONTAINER
+********************************************************/
+.participants-section {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/********************************************************
+    TABLE STYLING
+  ********************************************************/
+.participants-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  text-align: center; /* Center columns except for name columns if you prefer left alignment */
+}
+
+.participants-table thead {
+  background: #f5f5f5;
+}
+
+.participants-table th,
+.participants-table td {
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* Hover effect on rows */
+.participants-table tbody tr:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+/********************************************************
+    STATUS CELL
+  ********************************************************/
+/* 
+     We apply green or red color in the markup logic 
+     (a check or X). 
+     You can also handle coloring here if you prefer. 
+  */
+.status-cell {
+  font-size: 1.2rem;
+  transition: transform 0.2s;
+}
+.status-cell:hover {
+  transform: scale(1.1);
+}
+
+/********************************************************
+    RESPONSIVE ADJUSTMENTS
+  ********************************************************/
+@media (max-width: 600px) {
+  .participants-table th,
+  .participants-table td {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+}
+
+.dark .participants-section {
+  background: #1e1e1e;
+}
+.dark .participants-table th,
+.dark .participants-table td {
+  border-color: #444;
+  color: #eaeaea;
+}
+/* etc. */
+.add-participant-form {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.add-participant-form input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  min-width: 150px;
+}
+
+.add-participant-form button {
+  padding: 0.5rem 1rem;
+  background-color: #8c5ff2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.add-participant-form button:hover {
+  background-color: #6e46d6;
+}
+
+.participants-table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.participants-section {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 100%;                
+  max-width: 100vw;           
+  box-sizing: border-box;     
+}
+
+.participants-table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+  box-sizing: border-box;
+}

@@ -2,7 +2,8 @@
   GLOBAL / BODY / ROOT
 ********************************************************/
 /* Ensure the entire page can fill up large displays */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -12,7 +13,8 @@ html, body {
   color: #333;
 }
 
-#root, .App {
+#root,
+.App {
   width: 100%;
   height: 100%;
 }
@@ -47,7 +49,9 @@ html, body {
   font-weight: 600;
   font-size: 1rem;
   border-radius: 6px;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
   color: #333;
 }
 
@@ -132,7 +136,9 @@ html, body {
   cursor: pointer;
   font-size: 1rem;
   font-weight: 600;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 }
 
 .big-button:hover {
@@ -160,12 +166,14 @@ html, body {
   flex-direction: column;
   justify-content: center;
   position: relative;
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .criterion-box:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   transform: translateY(-3px);
 }
 
@@ -263,10 +271,10 @@ html, body {
 .dark .criterion-box {
   background: #2a2a2a;
   border-color: #444;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 .dark .criterion-box:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
 .dark .criterion-box.add-box {

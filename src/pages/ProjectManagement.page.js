@@ -4,6 +4,9 @@ import '../styles/ProjectManagementPage.style.css';
 import projectService from '../services/project.service';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
+import CriteriaSection from '../contexts/Criteria.section';
+import ParticipantsSection from '../contexts/Participants.section';
+import ParticipantsViewSection from '../contexts/ParticipantsView.Section';
 
 function ProjectManagementPage() {
   const { id } = useParams();
@@ -58,8 +61,8 @@ function ProjectManagementPage() {
           Criteria
         </button>
         <button
-          className={`tab-button ${activeTab === 'participants' ? 'active' : ''}`}
-          onClick={() => setActiveTab('participants')}
+          className={`tab-button ${activeTab === 'viewParticipants' ? 'active' : ''}`}
+          onClick={() => setActiveTab('viewParticipants')}
         >
           Participants
         </button>
@@ -73,7 +76,15 @@ function ProjectManagementPage() {
 
       <div className="main-content">
         {/* Left side: main area */}
-        <div className="main-area"></div>
+        <div className="main-area">
+          {activeTab === 'criteria' && <CriteriaSection projectId={id} />}
+          {activeTab === 'editParticipants' && (
+            <ParticipantsSection projectId={id} />
+          )}
+          {activeTab === 'viewParticipants' && (
+            <ParticipantsViewSection projectId={id} />
+          )}
+        </div>
 
         {/* Right side: fields from your attached image, in English */}
         <div className="project-details-sidebar">
@@ -134,9 +145,19 @@ function ProjectManagementPage() {
               }
               min={0}
               max={project.group_size}
-              disabled
             />
           </div>
+
+          {project.code && (
+            <div className="detail-field">
+              <label>Code</label>
+              <input
+                type="text"
+                value={project.code.slice(0, 4) + '-' + project.code.slice(4)}
+                disabled
+              />
+            </div>
+          )}
 
           <button className="big-button" onClick={handleUpdate}>
             Save
