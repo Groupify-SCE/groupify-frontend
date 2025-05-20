@@ -11,7 +11,7 @@ const ParticipantsViewSection = ({ projectId }) => {
 
   useEffect(() => {
     fetchParticipants();
-  }, []);
+  }, [projectId]);
 
   const fetchParticipants = async () => {
     try {
@@ -29,8 +29,7 @@ const ParticipantsViewSection = ({ projectId }) => {
   };
 
   const renderStatus = (rowData) => {
-    const hasPreferences =
-      rowData?.criteria && Object.keys(rowData.criteria).length > 0;
+    const hasPreferences = rowData?.preferences;
     return (
       <span className={hasPreferences ? 'status-check' : 'status-x'}>
         {hasPreferences ? '✔' : '✘'}

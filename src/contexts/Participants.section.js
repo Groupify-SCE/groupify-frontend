@@ -16,11 +16,10 @@ const ParticipantsSection = ({ projectId }) => {
   const [participants, setParticipants] = useState([]);
   const [criteriaDialogVisible, setCriteriaDialogVisible] = useState(false);
   const [selectedParticipant, setSelectedParticipant] = useState(null);
-  const [deletedIds, setDeletedIds] = useState([]);
 
   useEffect(() => {
     fetchParticipants();
-  }, []);
+  }, [projectId]);
 
   const fetchParticipants = async () => {
     try {
@@ -109,7 +108,7 @@ const ParticipantsSection = ({ projectId }) => {
 
       <div className="participants-table-wrapper">
         <DataTable
-          value={participants.filter((p) => !deletedIds.includes(p._id))}
+          value={participants}
           editMode="row"
           dataKey="_id"
           onRowEditComplete={onRowEditComplete}

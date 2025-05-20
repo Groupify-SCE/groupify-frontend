@@ -145,9 +145,19 @@ function ProjectManagementPage() {
               }
               min={0}
               max={project.group_size}
-              disabled
             />
           </div>
+
+          {project.code && (
+            <div className="detail-field">
+              <label>Code</label>
+              <input
+                type="text"
+                value={project.code.slice(0, 4) + '-' + project.code.slice(4)}
+                disabled
+              />
+            </div>
+          )}
 
           <button className="big-button" onClick={handleUpdate}>
             Save
