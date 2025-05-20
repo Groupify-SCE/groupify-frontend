@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import userService from '../services/user.service';
 import { StatusCodes } from 'http-status-codes';
@@ -16,6 +16,7 @@ function ProfilePage() {
     passwordConfirmation: '',
   });
   const [error, setError] = useState('');
+  const formRef = useRef(null);
 
   useEffect(() => {
     fetchData();
@@ -51,7 +52,7 @@ function ProfilePage() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
 
     // Create trimmed versions for first and last names
     const trimmedFirstName = formData.firstName
@@ -129,87 +130,103 @@ function ProfilePage() {
     }
   };
 
+  const handleButtonClick = () => {
+    // Call the same handler but without an event
+    handleSubmit();
+  };
+
   return (
-    <div className="profile-container">
-      <h1 className="profile-header">Welcome Back, {username}!</h1>
-      {error && <p className="profile-error">{error}</p>}
-      <form className="profile-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="username">Username</label>
-          <input
-            id="username"
-            type="text"
-            name="username"
-            placeholder="Your username"
-            value={formData.username}
-            onChange={handleChange}
-            disabled
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="firstName">First Name</label>
-          <input
-            id="firstName"
-            type="text"
-            name="firstName"
-            placeholder="Your first name"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
-        </div>
+    <div className="profile-page-wrapper">
+      <div className="profile-container">
+        <h1 className="profile-header">Welcome Back, {username}!</h1>
+        {error && <p className="profile-error">{error}</p>}
 
-        <div className="form-group">
-          <label htmlFor="lastName">Last Name</label>
-          <input
-            id="lastName"
-            type="text"
-            name="lastName"
-            placeholder="Your last name"
-            value={formData.lastName}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            placeholder="you@example.com"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </div>
+        <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
+          <div className="form-section">
+            <div className="profile-form">
+              <div className="form-group">
+                <label htmlFor="username">Username</label>
+                <input
+                  id="username"
+                  type="text"
+                  name="username"
+                  placeholder="Your username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  disabled
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="firstName">First Name</label>
+                <input
+                  id="firstName"
+                  type="text"
+                  name="firstName"
+                  placeholder="Your first name"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                />
+              </div>
 
-        <div className="form-group">
-          <label htmlFor="password">New Password</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            placeholder="••••••••"
-            pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$"
-            title="Password must be at least 8 characters long and include at least one letter, one digit, and one special character."
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="passwordConfirmation">Confirm New Password</label>
-          <input
-            id="passwordConfirmation"
-            type="password"
-            name="passwordConfirmation"
-            placeholder="••••••••"
-            value={formData.passwordConfirmation}
-            onChange={handleChange}
-          />
-        </div>
+              <div className="form-group">
+                <label htmlFor="lastName">Last Name</label>
+                <input
+                  id="lastName"
+                  type="text"
+                  name="lastName"
+                  placeholder="Your last name"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </div>
 
-        <button type="submit" className="update-button grid-span-2">
-          Update Info
-        </button>
-      </form>
+              <div className="form-group">
+                <label htmlFor="password">New Password</label>
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  placeholder="••••••••"
+                  pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$"
+                  title="Password must be at least 8 characters long and include at least one letter, one digit, and one special character."
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="passwordConfirmation">
+                  Confirm New Password
+                </label>
+                <input
+                  id="passwordConfirmation"
+                  type="password"
+                  name="passwordConfirmation"
+                  placeholder="••••••••"
+                  value={formData.passwordConfirmation}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <div className="button-section">
+          <button onClick={handleButtonClick} className="update-button">
+            Update Info
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

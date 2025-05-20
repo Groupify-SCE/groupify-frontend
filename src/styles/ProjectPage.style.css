@@ -5,14 +5,17 @@
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1.5rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 2rem;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
   direction: rtl;
   text-align: right;
-  background-color: #f8f8f8; /* Subtle light background */
+  background: linear-gradient(135deg, #f6f8fb 0%, #e9f0f8 100%);
+  min-height: 100vh;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 /********************************************************
@@ -20,47 +23,66 @@
 ********************************************************/
 .project-box {
   height: 14rem;
-  padding: 1rem;
+  padding: 1.25rem;
   padding-bottom: 4rem; /* space for delete button */
-  border: 1px solid #ddd;
-  background-color: #fff;
-  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
   position: relative;
   cursor: pointer;
   direction: ltr;
   text-align: left;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 }
+
 .project-box:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
+
 .project-box:active {
-  transform: translateY(0);
+  transform: translateY(-2px);
 }
 
 /********************************************************
   ADD BOX (Plus Cube)
 ********************************************************/
 .add-box {
-  border: 2px dashed #8c5ff2;
+  border: 2px dashed var(--purple-light);
   position: relative;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition:
-    background-color 0.3s,
-    border-color 0.3s;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  overflow: hidden;
 }
+
+.add-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(140, 95, 242, 0.05),
+    rgba(140, 95, 242, 0.1)
+  );
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
 .add-box:hover {
-  background-color: #f0f0f0;
-  border-color: #6b3add;
+  transform: translateY(-5px);
+  border-color: var(--purple-dark);
+  box-shadow: 0 8px 30px rgba(140, 95, 242, 0.15);
+}
+
+.add-box:hover::before {
+  opacity: 1;
 }
 
 /* Centered plus sign */
@@ -70,33 +92,52 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 4rem;
-  font-weight: bold;
+  font-weight: 800;
   line-height: 1;
   margin: 0;
   pointer-events: none;
-  color: #8c5ff2;
+  background: linear-gradient(
+    to right,
+    var(--purple-light),
+    var(--purple-dark)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: all 0.3s ease;
+}
+
+.add-box:hover .plus-sign {
+  transform: translate(-50%, -50%) scale(1.1);
+  text-shadow: 0 0 15px rgba(140, 95, 242, 0.3);
 }
 
 /********************************************************
   LABELS & INPUTS
 ********************************************************/
 .project-box label {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: #555;
+  color: #4a5568;
+  margin-bottom: 0.25rem;
 }
+
 .project-box input {
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  background-color: #fafafa;
-  color: #333;
-  transition: border-color 0.3s;
+  padding: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.9);
+  color: #2d3748;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
+
 .project-box input:focus {
-  border-color: #8c5ff2;
+  border-color: var(--purple-light);
+  box-shadow: 0 0 0 3px rgba(140, 95, 242, 0.2);
+  outline: none;
 }
 
 /********************************************************
@@ -106,9 +147,9 @@
   position: absolute;
   bottom: 1rem;
   left: 1rem;
-  width: 40px;
-  height: 40px;
-  background-color: #d32f2f;
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #f56565, #e53e3e);
   color: #fff;
   border: none;
   border-radius: 50%;
@@ -116,21 +157,38 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition:
-    transform 0.3s ease,
-    background-color 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 4px 10px rgba(229, 62, 62, 0.3);
 }
+
 .delete-button:hover {
-  background-color: #c62828;
-  transform: scale(1.05);
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(229, 62, 62, 0.4);
+}
+
+.delete-button:active {
+  transform: scale(0.95);
 }
 
 /********************************************************
   RESPONSIVE ADJUSTMENTS
 ********************************************************/
+@media (max-width: 768px) {
+  .project-page-container {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    padding: 1.5rem;
+    gap: 1.25rem;
+  }
+}
+
 @media (max-width: 600px) {
   .project-page-container {
     grid-template-columns: 1fr;
+    width: 95%;
+  }
+
+  .project-box {
+    height: 13rem;
   }
 }
 
@@ -138,37 +196,58 @@
   DARK MODE
 ********************************************************/
 .dark .project-page-container {
-  background-color: #121212;
+  background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
 }
 
 .dark .project-box {
-  background-color: #1e1e1e;
-  border-color: #333;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  background: rgba(17, 24, 39, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
+
 .dark .project-box label {
-  color: #ffffff;
+  color: #e2e8f0;
 }
+
 .dark .project-box input {
-  background-color: #2a2a2a;
-  border-color: #444;
-  color: #eaeaea;
+  background: rgba(26, 32, 44, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
 }
+
+.dark .project-box input::placeholder {
+  color: #718096;
+}
+
 .dark .project-box input:focus {
-  border-color: #8c5ff2;
+  border-color: var(--purple-light);
+  box-shadow: 0 0 0 3px rgba(140, 95, 242, 0.3);
 }
 
 .dark .add-box {
-  border-color: #8c5ff2;
-  background-color: #1e1e1e;
+  border-color: rgba(140, 95, 242, 0.5);
+  background: rgba(17, 24, 39, 0.6);
 }
+
+.dark .add-box::before {
+  background: linear-gradient(
+    135deg,
+    rgba(140, 95, 242, 0.1),
+    rgba(140, 95, 242, 0.2)
+  );
+}
+
 .dark .plus-sign {
-  color: #8c5ff2;
+  background: linear-gradient(to right, var(--purple-light), var(--text-light));
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 .dark .delete-button {
-  background-color: #b71c1c;
+  background: linear-gradient(135deg, #e53e3e, #c53030);
+  box-shadow: 0 4px 10px rgba(229, 62, 62, 0.2);
 }
+
 .dark .delete-button:hover {
-  background-color: #a50e0e;
+  box-shadow: 0 6px 15px rgba(229, 62, 62, 0.3);
 }
