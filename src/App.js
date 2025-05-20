@@ -10,7 +10,6 @@ import ForgotPasswordPage from './pages/ForgotPassword.page';
 import ResetPasswordPage from './pages/ResetPassword.page';
 import ProjectPage from './pages/Project.page';
 import ProjectManagementPage from './pages/ProjectManagement.page';
-import GroupsPage from './pages/Groups.page';
 import { ToastContainer } from 'react-toastify';
 import './styles/Alert.style.css';
 
@@ -48,7 +47,6 @@ function App() {
           path="/project-management/:id"
           element={<ProjectManagementPage />}
         />
-        <Route path="/groups/:id" element={<GroupsPage />} />
       </Routes>
     </Router>
   );
