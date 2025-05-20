@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import CriteriaSection from '../contexts/Criteria.section';
 import ParticipantsSection from '../contexts/Participants.section';
 import ParticipantsViewSection from '../contexts/ParticipantsView.Section';
+import algoService from '../services/algo.service';
 
 function ProjectManagementPage() {
   const { id } = useParams();
@@ -19,6 +20,7 @@ function ProjectManagementPage() {
     registrants: 0,
     group_size: 0,
     preferences: 0,
+    groups: false,
   });
 
   useEffect(() => {
@@ -47,6 +49,20 @@ function ProjectManagementPage() {
       toast.success('Project updated successfully');
     } else {
       toast.error('Failed to update project');
+    }
+  };
+
+  const handleCreateGroups = async () => {
+    try {
+      const result = await algoService.runAlgorithm(id);
+      if (result.status === StatusCodes.OK) {
+        toast.success('Groups created successfully');
+        setProject({ ...project, groups: true });
+      } else {
+        toast.error('Failed to create groups');
+      }
+    } catch (error) {
+      toast.error('Failed to create groups');
     }
   };
 
@@ -162,7 +178,10 @@ function ProjectManagementPage() {
           <button className="big-button" onClick={handleUpdate}>
             Save
           </button>
-          <button className="big-button">Create groups</button>
+          {project.groups && <button className="big-button">See Groups</button>}
+          <button className="big-button" onClick={handleCreateGroups}>
+            {project.groups ? 'Recreate Groups' : 'Create Groups'}
+          </button>
         </div>
       </div>
     </div>
