@@ -18,7 +18,6 @@ const CriteriaEditorForm = ({ participant, onClose, onSave }) => {
         const data = await res.json();
         const defs = data.response || [];
         setCriteriaDefs(defs);
-        console.log('🧩 criteriaDefs:', defs);
 
         try {
           const critJson = await projectService.getParticipantCriteria(
@@ -26,13 +25,9 @@ const CriteriaEditorForm = ({ participant, onClose, onSave }) => {
           );
           const valuesList = critJson.response || [];
 
-          console.log('🎯 participant criteria response:', critJson);
-          console.log('🎯 valuesList:', valuesList);
-
           const filled = {};
           valuesList.forEach((item) => {
             const key = item.criterion?.toString?.() || item.criterion;
-            console.log('🧪 mapping criterion:', key, '->', item.value);
             filled[key] = item.value;
           });
 
@@ -43,15 +38,12 @@ const CriteriaEditorForm = ({ participant, onClose, onSave }) => {
             }
           });
 
-          console.log('📦 filled values map:', filled);
           setCriteriaValues(filled);
         } catch (err) {
-          console.error('❌ Failed to load participant criteria:', err);
           toast.error('Could not load existing criteria values');
         }
       })
       .catch((err) => {
-        console.error('❌ Failed to load criteria definitions:', err);
         toast.error('Could not load criteria');
       });
   }, [participant]);

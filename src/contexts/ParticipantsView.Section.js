@@ -11,7 +11,7 @@ const ParticipantsViewSection = ({ projectId }) => {
 
   useEffect(() => {
     fetchParticipants();
-  }, []);
+  });
 
   const fetchParticipants = async () => {
     try {
