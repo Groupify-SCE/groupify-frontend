@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import '../styles/CriteriaSection.style.css';
 import projectService from '../services/project.service';
 import { StatusCodes } from 'http-status-codes';
@@ -9,24 +9,14 @@ const CriteriaSection = ({ projectId }) => {
   const [originalCriteria, setOriginalCriteria] = useState([]);
   const [isDirty, setIsDirty] = useState(false);
 
-  // Fetch once on mount or whenever projectId changes
-  useEffect(() => {
-    handleGetCriteria();
-  }, [projectId]);
-
-  // Track whether the user has made unsaved edits
-  useEffect(() => {
-    setIsDirty(JSON.stringify(criteria) !== JSON.stringify(originalCriteria));
-  }, [criteria, originalCriteria]);
-
   // Fetch the list of criteria from the server
-  const handleGetCriteria = async () => {
+  const handleGetCriteria = useCallback(async () => {
     try {
       const result = await projectService.getAllCriteria(projectId);
       if (result.status === StatusCodes.OK) {
-        const data = await result.json();
-        setCriteria(data.response);
-        setOriginalCriteria(data.response);
+        const { response } = await result.json();
+        setCriteria(response);
+        setOriginalCriteria(response);
       } else {
         toast.error('Failed to get criteria');
       }
@@ -34,7 +24,17 @@ const CriteriaSection = ({ projectId }) => {
       console.error(err);
       toast.error('Error fetching criteria');
     }
-  };
+  }, [projectId]);
+
+  // Fetch once on mount or whenever projectId changes
+  useEffect(() => {
+    handleGetCriteria();
+  }, [projectId, handleGetCriteria]);
+
+  // Track whether the user has made unsaved edits
+  useEffect(() => {
+    setIsDirty(JSON.stringify(criteria) !== JSON.stringify(originalCriteria));
+  }, [criteria, originalCriteria]);
 
   // Add a new empty criterion
   const handleAddCriterion = async () => {
