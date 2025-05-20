@@ -20,6 +20,13 @@ class AlgoService extends BackendManager {
       method: 'PUT',
     });
   }
+
+  async getAlgorithmResults(projectId) {
+    return await this.sendRequest(`${projectId}`, {
+      credentials: 'include',
+      method: 'GET',
+    });
+  }
 }
 
 const algoService = AlgoService.getInstance();
