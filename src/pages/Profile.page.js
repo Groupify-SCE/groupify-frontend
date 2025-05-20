@@ -114,7 +114,12 @@ function ProfilePage() {
       const data = await response.json();
       if (response.status === StatusCodes.OK) {
         toast.success('User updated successfully!');
-        fetchData(); // Refresh data from the server
+        setFormData((prev) => ({
+          ...prev,
+          password: '',
+          passwordConfirmation: '',
+        }));
+        fetchData();
       } else {
         toast.error(data.response);
       }

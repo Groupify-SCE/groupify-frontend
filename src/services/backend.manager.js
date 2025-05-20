@@ -1,6 +1,6 @@
 export class BackendManager {
   constructor(extension) {
-    this.baseUrl = `http://localhost:3001/${extension}`;
+    this.baseUrl = `${process.env.REACT_APP_API_URL}/${extension}`;
   }
 
   async sendRequest(path, init) {

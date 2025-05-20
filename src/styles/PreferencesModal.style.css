@@ -1,0 +1,187 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: var(--bg-light);
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.form-group select,
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--purple-light);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--bg-light);
+  color: var(--text-dark);
+}
+
+.form-group select[multiple] {
+  height: 200px;
+}
+
+.form-group select option {
+  padding: 0.75rem;
+  color: var(--text-dark);
+  background: var(--bg-light);
+}
+
+.form-group select option:checked {
+  background: var(--purple-light) !important;
+  color: var(--text-light) !important;
+}
+
+.form-group select option:hover {
+  background: rgba(140, 95, 242, 0.1);
+}
+
+/* Remove number input arrows */
+.form-group input[type='number']::-webkit-inner-spin-button,
+.form-group input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.error-message {
+  color: #dc3545;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.modal-actions button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  background: var(--bg-light);
+  color: var(--text-dark);
+  border: 1px solid var(--purple-light);
+}
+
+.modal-actions button.btn-primary {
+  background: var(--purple-light);
+  color: var(--text-light);
+  border: none;
+}
+
+/* Dark theme */
+.dark .modal-overlay {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.dark .modal-content {
+  background: var(--bg-dark);
+}
+
+.dark .modal-content h2,
+.dark .form-group label {
+  color: var(--text-light);
+}
+
+.dark .form-group select,
+.dark .form-group input {
+  background: var(--bg-dark);
+  border-color: var(--purple-dark);
+  color: var(--text-light);
+}
+
+.dark .form-group select option {
+  background: var(--bg-dark);
+  color: var(--text-light);
+  padding: 0.75rem;
+}
+
+.dark .form-group select option:checked {
+  background: var(--purple-light) !important;
+  color: var(--text-light) !important;
+}
+
+.dark .form-group select option:hover {
+  background: rgba(140, 95, 242, 0.2);
+}
+
+.dark .modal-actions button {
+  background: var(--bg-dark);
+  color: var(--text-light);
+  border-color: var(--purple-dark);
+}
+
+.dark .modal-actions button.btn-primary {
+  background: var(--purple-light);
+  border: none;
+}
+
+/* Firefox specific styles */
+@-moz-document url-prefix() {
+  .form-group select option:checked {
+    box-shadow: inset 0 0 0 99999px var(--purple-light);
+  }
+
+  .dark .form-group select option:checked {
+    box-shadow: inset 0 0 0 99999px var(--purple-light);
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 0.5rem;
+  }
+
+  .modal-content {
+    padding: 1.5rem;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions button {
+    width: 100%;
+  }
+
+  .form-group select[multiple] {
+    height: 150px;
+  }
+}

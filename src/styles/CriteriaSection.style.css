@@ -1,0 +1,201 @@
+/********************************************************
+  CRITERIA PAGE CONTAINER
+********************************************************/
+.criteria-page-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  direction: rtl;
+  text-align: right;
+}
+
+/********************************************************
+  CRITERIA BOXES (Uniform Cubes)
+********************************************************/
+.criterion-box {
+  height: 16rem;
+  width: 16rem;
+  padding: 1rem;
+  padding-bottom: 4rem; /* space for delete button */
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  cursor: pointer;
+  direction: ltr;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.criterion-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.criterion-box:active {
+  transform: translateY(0);
+}
+
+/********************************************************
+  ADD BOX (Plus Cube)
+********************************************************/
+.add-box {
+  border: 2px dashed #8c5ff2;
+  position: relative;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
+}
+.add-box:hover {
+  background-color: #f0f0f0;
+  border-color: #6b3add;
+}
+
+/* Centered plus sign */
+.plus-sign {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 4rem;
+  font-weight: bold;
+  line-height: 1;
+  margin: 0;
+  pointer-events: none;
+  color: #8c5ff2;
+}
+
+/********************************************************
+  LABELS & INPUTS
+********************************************************/
+.criterion-box label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+}
+.criterion-box input,
+.criterion-box select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background-color: #fafafa;
+  color: #333;
+  transition: border-color 0.3s;
+}
+.criterion-box input:focus,
+.criterion-box select:focus {
+  border-color: #8c5ff2;
+}
+
+.update-button {
+  font-size: 1.5rem;
+  font-weight: bold;
+  position: absolute;
+  bottom: 1.5rem;
+  left: 2.5rem;
+  background-color: #8c5ff2;
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.update-button:hover {
+  background-color: #5534a3;
+  transform: scale(1.05);
+}
+
+/********************************************************
+  DELETE BUTTON (Bottom-Left)
+********************************************************/
+.delete-button {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  width: 40px;
+  height: 40px;
+  background-color: #d32f2f;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
+}
+.delete-button:hover {
+  background-color: #c62828;
+  transform: scale(1.05);
+}
+
+/********************************************************
+  RESPONSIVE ADJUSTMENTS
+********************************************************/
+@media (max-width: 600px) {
+  .criteria-page-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/********************************************************
+  DARK MODE
+********************************************************/
+
+.dark .criterion-box {
+  background-color: #1e1e1e;
+  border-color: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+.dark .criterion-box label {
+  color: #ffffff;
+}
+.dark .criterion-box input,
+.dark .criterion-box select {
+  background-color: #2a2a2a;
+  border-color: #444;
+  color: #eaeaea;
+}
+.dark .criterion-box input:focus,
+.dark .criterion-box select:focus {
+  border-color: #8c5ff2;
+}
+
+.dark .add-box {
+  border-color: #8c5ff2;
+  background-color: #1e1e1e;
+}
+.dark .plus-sign {
+  color: #8c5ff2;
+}
+
+.dark .delete-button {
+  background-color: #b71c1c;
+}
+.dark .delete-button:hover {
+  background-color: #a50e0e;
+}
