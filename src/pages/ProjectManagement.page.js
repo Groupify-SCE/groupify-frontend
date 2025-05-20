@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/ProjectManagementPage.style.css';
 import projectService from '../services/project.service';
 import { StatusCodes } from 'http-status-codes';
@@ -11,6 +11,7 @@ import algoService from '../services/algo.service';
 
 function ProjectManagementPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('criteria');
   const [project, setProject] = useState({
     _id: id,
@@ -58,6 +59,7 @@ function ProjectManagementPage() {
       if (result.status === StatusCodes.OK) {
         toast.success('Groups created successfully');
         setProject({ ...project, groups: true });
+        navigate(`/groups/${id}`);
       } else {
         toast.error('Failed to create groups');
       }
@@ -178,7 +180,14 @@ function ProjectManagementPage() {
           <button className="big-button" onClick={handleUpdate}>
             Save
           </button>
-          {project.groups && <button className="big-button">See Groups</button>}
+          {project.groups && (
+            <button
+              className="big-button"
+              onClick={() => navigate(`/groups/${id}`)}
+            >
+              See Groups
+            </button>
+          )}
           <button className="big-button" onClick={handleCreateGroups}>
             {project.groups ? 'Recreate Groups' : 'Create Groups'}
           </button>
