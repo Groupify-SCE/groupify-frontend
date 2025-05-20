@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import '../styles/ParticipantsSection.style.css';
 import projectService from '../services/project.service';
 import { StatusCodes } from 'http-status-codes';
@@ -17,11 +17,7 @@ const ParticipantsSection = ({ projectId }) => {
   const [criteriaDialogVisible, setCriteriaDialogVisible] = useState(false);
   const [selectedParticipant, setSelectedParticipant] = useState(null);
 
-  useEffect(() => {
-    fetchParticipants();
-  }, [projectId]);
-
-  const fetchParticipants = async () => {
+  const fetchParticipants = useCallback(async () => {
     try {
       const result = await projectService.getAllParticipants(projectId);
       const data = await result.json();
@@ -34,7 +30,11 @@ const ParticipantsSection = ({ projectId }) => {
       console.error(err);
       toast.error('Error fetching participants');
     }
-  };
+  }, [projectId]);
+
+  useEffect(() => {
+    fetchParticipants();
+  }, [projectId, fetchParticipants]);
 
   const textEditor = (options) => {
     return (

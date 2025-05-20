@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import projectService from '../services/project.service';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
@@ -9,11 +9,7 @@ import '../styles/ParticipantsViewSection.style.css';
 const ParticipantsViewSection = ({ projectId }) => {
   const [participants, setParticipants] = useState([]);
 
-  useEffect(() => {
-    fetchParticipants();
-  }, [projectId]);
-
-  const fetchParticipants = async () => {
+  const fetchParticipants = useCallback(async () => {
     try {
       const result = await projectService.getAllParticipants(projectId);
       const data = await result.json();
@@ -26,7 +22,11 @@ const ParticipantsViewSection = ({ projectId }) => {
       console.error(err);
       toast.error('Error fetching participants');
     }
-  };
+  }, [projectId]);
+
+  useEffect(() => {
+    fetchParticipants();
+  }, [projectId, fetchParticipants]);
 
   const renderStatus = (rowData) => {
     const hasPreferences = rowData?.preferences;
