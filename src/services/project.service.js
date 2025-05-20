@@ -157,6 +157,29 @@ class ProjectService extends BackendManager {
       }
     );
   }
+
+  async searchProject(code) {
+    return await this.sendRequest(`search/${code}`, {
+      credentials: 'include',
+      method: 'GET',
+    });
+  }
+
+  async savePreferences(selectedParticipant, participantId, preferences) {
+    console.log(selectedParticipant, participantId, preferences);
+    return await this.sendRequest(`preferences/save`, {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        selectedParticipant,
+        participantId,
+        preferences,
+      }),
+    });
+  }
 }
 
 const projectService = ProjectService.getInstance();

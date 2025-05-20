@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Papa from 'papaparse';
 import PerfChart from '../components/PerfChart';
+import PreferencesModal from '../components/PreferencesModal';
 import '../styles/LandingPage.style.css';
-
+import projectService from '../services/project.service';
+import { toast } from 'react-toastify';
 import abcIterationsFitness from '../assets/data/ABC/Iterations_960_Fitness.csv';
 import abcIterationsTime from '../assets/data/ABC/Iterations_960_Time.csv';
 import abcLimitFitness from '../assets/data/ABC/Limit_960_Fitness.csv';
@@ -33,6 +35,12 @@ export default function LandingPage() {
       metricTime: [],
     },
   });
+  const [showPreferencesModal, setShowPreferencesModal] = useState(false);
+  const [projectData, setProjectData] = useState(null);
+  const [selectedParticipant, setSelectedParticipant] = useState('');
+  const [participantId, setParticipantId] = useState('');
+  const [preferences, setPreferences] = useState([]);
+  const [error, setError] = useState('');
 
   const navigate = useNavigate();
 
@@ -206,7 +214,60 @@ export default function LandingPage() {
     setInterval(() => container.children.length < 8 && make(), 2000);
   };
 
-  const handleJoin = () => code.trim() && navigate(`/join/${code}`);
+  const handleJoin = async () => {
+    const cleanCode = code.replace('-', '').trim();
+    if (!cleanCode) return;
+
+    try {
+      setError('');
+      const response = await projectService.searchProject(cleanCode);
+      if (response.status === 404) {
+        toast.error('Project not found');
+        return;
+      }
+      const data = await response.json();
+      const { participants, maxPreferences } = data.response;
+      if (participants.length === 0) {
+        toast.error('No participants found');
+        return;
+      }
+      setProjectData({ participants, maxPreferences });
+      setShowPreferencesModal(true);
+    } catch (err) {
+      toast.error('Failed to find project');
+    }
+  };
+
+  const handleSubmitPreferences = async () => {
+    if (!selectedParticipant || !participantId) {
+      setError('Please select yourself and enter your ID');
+      return;
+    }
+
+    try {
+      const response = await projectService.savePreferences(
+        selectedParticipant,
+        participantId,
+        preferences.map((p) => p._id)
+      );
+      if (response.status === 200) {
+        toast.success('Preferences saved successfully');
+      } else {
+        console.error(await response.json());
+        toast.error('Failed to save preferences');
+      }
+
+      setShowPreferencesModal(false);
+      setSelectedParticipant('');
+      setParticipantId('');
+      setPreferences([]);
+      setProjectData(null);
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to save preferences');
+    }
+  };
+
   const handleCreate = () => navigate('/signup');
 
   const renderAlgo = (key) => (
@@ -266,6 +327,7 @@ export default function LandingPage() {
               value={code}
               onChange={(e) => setCode(e.target.value)}
               placeholder="Enter project code…"
+              maxLength={9}
             />
             <button className="btn-join" onClick={handleJoin}>
               Join Project →
@@ -391,6 +453,20 @@ export default function LandingPage() {
           {renderAlgo('beeColony')}
         </div>
       </section>
+      <PreferencesModal
+        show={showPreferencesModal}
+        onClose={() => setShowPreferencesModal(false)}
+        participants={projectData?.participants || []}
+        maxPreferences={projectData?.maxPreferences || 0}
+        selectedParticipant={selectedParticipant}
+        onSelectParticipant={setSelectedParticipant}
+        participantId={participantId}
+        onChangeId={(e) => setParticipantId(e.target.value)}
+        preferences={preferences}
+        onChangePreferences={setPreferences}
+        onSubmit={handleSubmitPreferences}
+        error={error}
+      />
     </div>
   );
 }

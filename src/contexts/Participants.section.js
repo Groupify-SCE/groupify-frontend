@@ -19,7 +19,7 @@ const ParticipantsSection = ({ projectId }) => {
 
   useEffect(() => {
     fetchParticipants();
-  });
+  }, [projectId]);
 
   const fetchParticipants = async () => {
     try {
