@@ -38,10 +38,10 @@ const Navbar = () => {
   return (
     <>
       {/* Top Bar (Desktop Layout) */}
-      <header className="navbar-section">
+      <header className="navbar-section" data-testid="navBarWrapper">
         {/* Left: Logo */}
         <div className="navbar-left">
-          <Link to="/" className="navbar-logo">
+          <Link to="/" className="navbar-logo" data-testid="landingNavButton">
             <img src={logoLight} alt="Light Logo" className="navbar-logo-img" />
             <h1 className="navbar-logo-text">Groupify</h1>
           </Link>
@@ -51,22 +51,38 @@ const Navbar = () => {
         <div className="navbar-actions">
           {!isAuthenticated ? (
             <>
-              <Link to="/login" className="btn">
+              <Link to="/login" className="btn" data-testid="loginNavButton">
                 Login
               </Link>
-              <Link to="/signup" className="btn btn-primary">
+              <Link
+                to="/signup"
+                className="btn btn-primary"
+                data-testid="signupNavButton"
+              >
                 Sign Up
               </Link>
             </>
           ) : (
             <>
-              <Link to="/profile" className="btn">
+              <Link
+                to="/profile"
+                className="btn"
+                data-testid="profileNavButton"
+              >
                 Profile
               </Link>
-              <Link to="/projects" className="btn">
+              <Link
+                to="/projects"
+                className="btn"
+                data-testid="projectsNavButton"
+              >
                 Projects
               </Link>
-              <button onClick={handleLogout} className="btn btn-primary">
+              <button
+                onClick={handleLogout}
+                className="btn btn-primary"
+                data-testid="logoutNavButton"
+              >
                 Logout
               </button>
             </>
