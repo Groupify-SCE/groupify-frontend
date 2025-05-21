@@ -8,11 +8,13 @@ import CriteriaSection from '../contexts/Criteria.section';
 import ParticipantsSection from '../contexts/Participants.section';
 import ParticipantsViewSection from '../contexts/ParticipantsView.Section';
 import algoService from '../services/algo.service';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 function ProjectManagementPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('criteria');
+  const [loading, setLoading] = useState(true);
   const [project, setProject] = useState({
     _id: id,
     user: '',
@@ -26,12 +28,19 @@ function ProjectManagementPage() {
 
   useEffect(() => {
     const fetchProject = async () => {
-      const result = await projectService.get(id);
-      const data = await result.json();
-      if (result.status === StatusCodes.OK) {
-        setProject(data.response);
-      } else {
-        toast.error('Failed to fetch project details');
+      setLoading(true);
+      try {
+        const result = await projectService.get(id);
+        const data = await result.json();
+        if (result.status === StatusCodes.OK) {
+          setProject(data.response);
+        } else {
+          toast.error('Failed to fetch project details');
+        }
+      } catch (error) {
+        toast.error('Error loading project');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -40,20 +49,28 @@ function ProjectManagementPage() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const result = await projectService.update(
-      project._id,
-      project.name,
-      project.participants,
-      project.group_size
-    );
-    if (result.status === StatusCodes.OK) {
-      toast.success('Project updated successfully');
-    } else {
-      toast.error('Failed to update project');
+    setLoading(true);
+    try {
+      const result = await projectService.update(
+        project._id,
+        project.name,
+        project.participants,
+        project.group_size
+      );
+      if (result.status === StatusCodes.OK) {
+        toast.success('Project updated successfully');
+      } else {
+        toast.error('Failed to update project');
+      }
+    } catch (error) {
+      toast.error('Error updating project');
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleCreateGroups = async () => {
+    setLoading(true);
     try {
       const result = await algoService.runAlgorithm(id);
       if (result.status === StatusCodes.OK) {
@@ -65,11 +82,15 @@ function ProjectManagementPage() {
       }
     } catch (error) {
       toast.error('Failed to create groups');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="project-management-page">
+      {loading && <LoadingSpinner fullPage text="Loading project..." />}
+
       {/* Top Tabs */}
       <div className="tabs">
         <button
@@ -113,6 +134,7 @@ function ProjectManagementPage() {
               value={project.name}
               onChange={(e) => setProject({ ...project, name: e.target.value })}
               maxLength={100}
+              disabled={loading}
             />
           </div>
 
@@ -125,6 +147,7 @@ function ProjectManagementPage() {
                 setProject({ ...project, participants: e.target.value })
               }
               min={1}
+              disabled={loading}
             />
           </div>
 
@@ -150,6 +173,7 @@ function ProjectManagementPage() {
               }
               min={1}
               max={project.participants}
+              disabled={loading}
             />
           </div>
 
@@ -163,6 +187,7 @@ function ProjectManagementPage() {
               }
               min={0}
               max={project.group_size}
+              disabled={loading}
             />
           </div>
 
@@ -177,18 +202,27 @@ function ProjectManagementPage() {
             </div>
           )}
 
-          <button className="big-button" onClick={handleUpdate}>
+          <button
+            className="big-button"
+            onClick={handleUpdate}
+            disabled={loading}
+          >
             Save
           </button>
           {project.groups && (
             <button
               className="big-button"
               onClick={() => navigate(`/groups/${id}`)}
+              disabled={loading}
             >
               See Groups
             </button>
           )}
-          <button className="big-button" onClick={handleCreateGroups}>
+          <button
+            className="big-button"
+            onClick={handleCreateGroups}
+            disabled={loading}
+          >
             {project.groups ? 'Recreate Groups' : 'Create Groups'}
           </button>
         </div>

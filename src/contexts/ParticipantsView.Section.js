@@ -5,11 +5,14 @@ import { toast } from 'react-toastify';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import '../styles/ParticipantsViewSection.style.css';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const ParticipantsViewSection = ({ projectId }) => {
   const [participants, setParticipants] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchParticipants = useCallback(async () => {
+    setLoading(true);
     try {
       const result = await projectService.getAllParticipants(projectId);
       const data = await result.json();
@@ -21,6 +24,8 @@ const ParticipantsViewSection = ({ projectId }) => {
     } catch (err) {
       console.error(err);
       toast.error('Error fetching participants');
+    } finally {
+      setLoading(false);
     }
   }, [projectId]);
 
@@ -39,11 +44,17 @@ const ParticipantsViewSection = ({ projectId }) => {
 
   return (
     <div className="participants-section">
+      {loading && (
+        <div className="participants-loading-overlay">
+          <LoadingSpinner text="Loading participants..." />
+        </div>
+      )}
       <div className="styled-table-wrapper">
         <DataTable
           value={participants}
           className="styled-table"
           responsiveLayout="scroll"
+          loading={loading}
         >
           <Column field="firstName" header="First Name" className="column" />
           <Column field="lastName" header="Last Name" className="column" />

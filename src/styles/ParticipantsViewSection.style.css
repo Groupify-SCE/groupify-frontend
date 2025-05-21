@@ -367,3 +367,22 @@
     min-width: 100%;
   }
 }
+
+.participants-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  border-radius: 12px;
+}
+
+.dark .participants-loading-overlay {
+  background: rgba(30, 35, 50, 0.7);
+}

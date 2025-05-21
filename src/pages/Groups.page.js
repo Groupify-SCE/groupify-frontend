@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import GroupGrid from '../components/GroupGrid';
 import { exportGroupsToExcel } from '../utils/excelExport';
 import '../styles/Groups.css';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const ExcelIcon = () => (
   <svg
@@ -24,6 +25,7 @@ const GroupsPage = () => {
 
   useEffect(() => {
     const fetchGroups = async () => {
+      setLoading(true);
       try {
         const result = await algoService.getAlgorithmResults(id);
         const data = await result.json();
@@ -54,7 +56,7 @@ const GroupsPage = () => {
     <div className="groups-page">
       <h1 className="page-title">Group Assignments</h1>
       {loading ? (
-        <div className="loading-spinner">Loading groups...</div>
+        <LoadingSpinner fullPage text="Loading groups..." />
       ) : (
         <>
           <GroupGrid groups={groups} />

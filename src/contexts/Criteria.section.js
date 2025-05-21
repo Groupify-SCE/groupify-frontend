@@ -3,14 +3,17 @@ import '../styles/CriteriaSection.style.css';
 import projectService from '../services/project.service';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const CriteriaSection = ({ projectId }) => {
   const [criteria, setCriteria] = useState([]);
   const [originalCriteria, setOriginalCriteria] = useState([]);
   const [isDirty, setIsDirty] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Fetch the list of criteria from the server
   const handleGetCriteria = useCallback(async () => {
+    setLoading(true);
     try {
       const result = await projectService.getAllCriteria(projectId);
       if (result.status === StatusCodes.OK) {
@@ -23,6 +26,8 @@ const CriteriaSection = ({ projectId }) => {
     } catch (err) {
       console.error(err);
       toast.error('Error fetching criteria');
+    } finally {
+      setLoading(false);
     }
   }, [projectId]);
 
@@ -38,6 +43,7 @@ const CriteriaSection = ({ projectId }) => {
 
   // Add a new empty criterion
   const handleAddCriterion = async () => {
+    setLoading(true);
     try {
       const result = await projectService.addCriterion(
         projectId,
@@ -47,31 +53,37 @@ const CriteriaSection = ({ projectId }) => {
         handleGetCriteria();
       } else {
         toast.error('Failed to add criterion');
+        setLoading(false);
       }
     } catch (err) {
       console.error(err);
       toast.error('Error adding criterion');
+      setLoading(false);
     }
   };
 
   // Delete a criterion by ID
   const handleDelete = async (e, id) => {
     e.stopPropagation();
+    setLoading(true);
     try {
       const result = await projectService.deleteCriterion(id);
       if (result.status === StatusCodes.OK) {
         handleGetCriteria();
       } else {
         toast.error('Failed to delete criterion');
+        setLoading(false);
       }
     } catch (err) {
       console.error(err);
       toast.error('Error deleting criterion');
+      setLoading(false);
     }
   };
 
   // Save any edits back to the server
   const handleUpdate = async () => {
+    setLoading(true);
     try {
       const originalMap = originalCriteria.reduce((acc, curr) => {
         acc[curr._id] = curr;
@@ -88,6 +100,7 @@ const CriteriaSection = ({ projectId }) => {
           );
           if (result.status !== StatusCodes.OK) {
             toast.error('Failed to save criteria');
+            setLoading(false);
             return;
           }
         }
@@ -97,11 +110,18 @@ const CriteriaSection = ({ projectId }) => {
     } catch (err) {
       console.error(err);
       toast.error('Error updating criteria');
+      setLoading(false);
     }
   };
 
   return (
     <div className="criteria-page-container">
+      {loading && (
+        <div className="criteria-loading-overlay">
+          <LoadingSpinner text="Loading criteria..." />
+        </div>
+      )}
+
       {/* Add-box */}
       <div className="criterion-box add-box" onClick={handleAddCriterion}>
         <span className="plus-sign">+</span>
@@ -122,6 +142,7 @@ const CriteriaSection = ({ projectId }) => {
                 )
               );
             }}
+            disabled={loading}
           />
 
           <label>Type</label>
@@ -136,6 +157,7 @@ const CriteriaSection = ({ projectId }) => {
                 )
               );
             }}
+            disabled={loading}
           >
             <option value="1">Boolean</option>
             <option value="10">0-10</option>
@@ -147,6 +169,7 @@ const CriteriaSection = ({ projectId }) => {
           <button
             className="delete-button"
             onClick={(e) => handleDelete(e, criterion._id)}
+            disabled={loading}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -165,7 +188,11 @@ const CriteriaSection = ({ projectId }) => {
 
       {/* Save button appears only when edits exist */}
       {isDirty && (
-        <button className="update-button" onClick={handleUpdate}>
+        <button
+          className="update-button"
+          onClick={handleUpdate}
+          disabled={loading}
+        >
           Save Changes
         </button>
       )}
