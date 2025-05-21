@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/ProjectManagementPage.style.css';
 import projectService from '../services/project.service';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
-import CriteriaSection from '../contexts/Criteria.section';
-import ParticipantsSection from '../contexts/Participants.section';
-import ParticipantsViewSection from '../contexts/ParticipantsView.Section';
 import algoService from '../services/algo.service';
 import LoadingSpinner from '../components/LoadingSpinner';
+
+// Lazy load the tab content components
+const CriteriaSection = lazy(() => import('../contexts/Criteria.section'));
+const ParticipantsSection = lazy(
+  () => import('../contexts/Participants.section')
+);
+const ParticipantsViewSection = lazy(
+  () => import('../contexts/ParticipantsView.Section')
+);
 
 function ProjectManagementPage() {
   const { id } = useParams();
@@ -87,6 +93,27 @@ function ProjectManagementPage() {
     }
   };
 
+  // Render the proper tab with Suspense fallback
+  const renderTabContent = () => {
+    return (
+      <Suspense
+        fallback={
+          <div className="tab-loading">
+            <LoadingSpinner text="Loading content..." />
+          </div>
+        }
+      >
+        {activeTab === 'criteria' && <CriteriaSection projectId={id} />}
+        {activeTab === 'editParticipants' && (
+          <ParticipantsSection projectId={id} />
+        )}
+        {activeTab === 'viewParticipants' && (
+          <ParticipantsViewSection projectId={id} />
+        )}
+      </Suspense>
+    );
+  };
+
   return (
     <div className="project-management-page">
       {loading && <LoadingSpinner fullPage text="Loading project..." />}
@@ -115,15 +142,7 @@ function ProjectManagementPage() {
 
       <div className="main-content">
         {/* Left side: main area */}
-        <div className="main-area">
-          {activeTab === 'criteria' && <CriteriaSection projectId={id} />}
-          {activeTab === 'editParticipants' && (
-            <ParticipantsSection projectId={id} />
-          )}
-          {activeTab === 'viewParticipants' && (
-            <ParticipantsViewSection projectId={id} />
-          )}
-        </div>
+        <div className="main-area">{renderTabContent()}</div>
 
         {/* Right side: fields from your attached image, in English */}
         <div className="project-details-sidebar">

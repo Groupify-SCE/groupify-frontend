@@ -386,3 +386,79 @@
 .dark .participants-loading-overlay {
   background: rgba(30, 35, 50, 0.7);
 }
+
+/* Refresh button styling */
+.refresh-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.refresh-button {
+  background: linear-gradient(135deg, #8c5ff2, #6b3add);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 3px 12px rgba(107, 58, 221, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.refresh-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.7s ease;
+}
+
+.refresh-button:hover {
+  background: linear-gradient(135deg, #9d77ff, #7b52e6);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(107, 58, 221, 0.3);
+}
+
+.refresh-button:hover::before {
+  left: 100%;
+}
+
+.refresh-button:active {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(107, 58, 221, 0.2);
+}
+
+.refresh-button:disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.dark .refresh-button:disabled {
+  background: #4a5568;
+  color: #a0aec0;
+}
+
+/* Dark mode support */
+.dark .refresh-button {
+  background: linear-gradient(135deg, #8c5ff2, #6b3add);
+  box-shadow: 0 3px 12px rgba(107, 58, 221, 0.3);
+}
+
+.dark .refresh-button:hover {
+  background: linear-gradient(135deg, #9d77ff, #7b52e6);
+  box-shadow: 0 5px 15px rgba(107, 58, 221, 0.4);
+}

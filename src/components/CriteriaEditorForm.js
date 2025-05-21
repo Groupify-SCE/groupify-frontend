@@ -5,8 +5,14 @@ import projectService from '../services/project.service';
 import '../styles/CriteriaEditorForm.css';
 import LoadingSpinner from './LoadingSpinner';
 
-const CriteriaEditorForm = ({ participant, onClose, onSave, onLoad }) => {
-  const [criteriaDefs, setCriteriaDefs] = useState([]);
+const CriteriaEditorForm = ({
+  participant,
+  onClose,
+  onSave,
+  onLoad,
+  preloadedCriteria = null,
+}) => {
+  const [criteriaDefs, setCriteriaDefs] = useState(preloadedCriteria || []);
   const [criteriaValues, setCriteriaValues] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -20,13 +26,20 @@ const CriteriaEditorForm = ({ participant, onClose, onSave, onLoad }) => {
 
     const loadData = async () => {
       setLoading(true);
+
       try {
-        console.log('Fetching criteria for project:', participant.projectId);
-        const res = await projectService.getAllCriteria(participant.projectId);
-        const data = await res.json();
-        const defs = data.response || [];
-        setCriteriaDefs(defs);
-        console.log('Criteria definitions loaded:', defs.length);
+        // Only fetch criteria definitions if they weren't preloaded
+        let defs = preloadedCriteria;
+        if (!defs) {
+          console.log('Fetching criteria for project:', participant.projectId);
+          const res = await projectService.getAllCriteria(
+            participant.projectId
+          );
+          const data = await res.json();
+          defs = data.response || [];
+          setCriteriaDefs(defs);
+          console.log('Criteria definitions loaded:', defs.length);
+        }
 
         // Fill in values with defaults first (all zeros)
         const defaultValues = {};
@@ -67,7 +80,7 @@ const CriteriaEditorForm = ({ participant, onClose, onSave, onLoad }) => {
     };
 
     loadData();
-  }, [participant, onLoad]);
+  }, [participant, onLoad, preloadedCriteria]);
 
   const handleChange = (id, value) => {
     setCriteriaValues((prev) => ({ ...prev, [id]: value }));

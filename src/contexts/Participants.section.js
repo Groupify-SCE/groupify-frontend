@@ -18,6 +18,8 @@ const ParticipantsSection = ({ projectId }) => {
   const [criteriaDialogVisible, setCriteriaDialogVisible] = useState(false);
   const [selectedParticipant, setSelectedParticipant] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [criteriaDefs, setCriteriaDefs] = useState(null);
+  const [, setCriteriaLoading] = useState(false);
 
   const fetchParticipants = useCallback(async () => {
     setLoading(true);
@@ -37,9 +39,36 @@ const ParticipantsSection = ({ projectId }) => {
     }
   }, [projectId]);
 
+  // Fetch criteria definitions once and cache them
+  const fetchCriteriaDefs = useCallback(async () => {
+    if (criteriaDefs) return criteriaDefs; // Return cached data if available
+
+    setCriteriaLoading(true);
+    try {
+      const result = await projectService.getAllCriteria(projectId);
+      if (result.status === StatusCodes.OK) {
+        const data = await result.json();
+        const definitions = data.response || [];
+        setCriteriaDefs(definitions);
+        return definitions;
+      } else {
+        toast.error('Failed to fetch criteria definitions');
+        return [];
+      }
+    } catch (err) {
+      console.error('Error fetching criteria definitions:', err);
+      toast.error('Error fetching criteria definitions');
+      return [];
+    } finally {
+      setCriteriaLoading(false);
+    }
+  }, [projectId, criteriaDefs]);
+
   useEffect(() => {
     fetchParticipants();
-  }, [projectId, fetchParticipants]);
+    // Prefetch criteria definitions when component mounts
+    fetchCriteriaDefs();
+  }, [projectId, fetchParticipants, fetchCriteriaDefs]);
 
   const textEditor = (options) => {
     return (
@@ -218,6 +247,7 @@ const ParticipantsSection = ({ projectId }) => {
         {selectedParticipant && (
           <CriteriaEditorForm
             participant={selectedParticipant}
+            preloadedCriteria={criteriaDefs}
             onClose={() => setCriteriaDialogVisible(false)}
             onSave={(updatedCriteria) => {
               setParticipants((prev) =>

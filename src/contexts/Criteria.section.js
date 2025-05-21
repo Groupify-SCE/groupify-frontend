@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import '../styles/CriteriaSection.style.css';
 import projectService from '../services/project.service';
 import { StatusCodes } from 'http-status-codes';
@@ -10,30 +10,55 @@ const CriteriaSection = ({ projectId }) => {
   const [originalCriteria, setOriginalCriteria] = useState([]);
   const [isDirty, setIsDirty] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const hasFetched = useRef(false);
 
   // Fetch the list of criteria from the server
-  const handleGetCriteria = useCallback(async () => {
-    setLoading(true);
-    try {
-      const result = await projectService.getAllCriteria(projectId);
-      if (result.status === StatusCodes.OK) {
-        const { response } = await result.json();
-        setCriteria(response);
-        setOriginalCriteria(response);
-      } else {
-        toast.error('Failed to get criteria');
+  const handleGetCriteria = useCallback(
+    async (forceFetch = false) => {
+      // Skip redundant fetches if we already have the data and it's not a forced fetch
+      if (hasFetched.current && !forceFetch) {
+        console.log('Skipping criteria fetch - data already loaded');
+        if (isInitialLoad) setIsInitialLoad(false);
+        return;
       }
-    } catch (err) {
-      console.error(err);
-      toast.error('Error fetching criteria');
-    } finally {
-      setLoading(false);
-    }
-  }, [projectId]);
+
+      setLoading(true);
+      try {
+        console.log('Fetching criteria for project:', projectId);
+        const result = await projectService.getAllCriteria(projectId);
+        if (result.status === StatusCodes.OK) {
+          const { response } = await result.json();
+          console.log('Criteria data loaded:', response?.length || 0, 'items');
+          setCriteria(response);
+          setOriginalCriteria(response);
+          hasFetched.current = true;
+        } else {
+          toast.error('Failed to get criteria');
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error('Error fetching criteria');
+      } finally {
+        setLoading(false);
+        setIsInitialLoad(false);
+      }
+    },
+    [projectId, isInitialLoad]
+  );
 
   // Fetch once on mount or whenever projectId changes
   useEffect(() => {
-    handleGetCriteria();
+    // Reset fetched state when projectId changes
+    if (projectId) {
+      hasFetched.current = false;
+      handleGetCriteria();
+    }
+
+    return () => {
+      // Clean up when component unmounts
+      hasFetched.current = false;
+    };
   }, [projectId, handleGetCriteria]);
 
   // Track whether the user has made unsaved edits
@@ -50,7 +75,9 @@ const CriteriaSection = ({ projectId }) => {
         `Criterion ${criteria.length + 1}`
       );
       if (result.status === StatusCodes.OK) {
-        handleGetCriteria();
+        // Instead of refetching, we can just update local state if the server provides the new item
+        // Or force a fetch to make sure we get the complete updated list
+        handleGetCriteria(true);
       } else {
         toast.error('Failed to add criterion');
         setLoading(false);
@@ -69,7 +96,12 @@ const CriteriaSection = ({ projectId }) => {
     try {
       const result = await projectService.deleteCriterion(id);
       if (result.status === StatusCodes.OK) {
-        handleGetCriteria();
+        // Optimistically update the UI without refetching
+        const updatedCriteria = criteria.filter((c) => c._id !== id);
+        setCriteria(updatedCriteria);
+        setOriginalCriteria(updatedCriteria);
+        setLoading(false);
+        toast.success('Criterion deleted successfully');
       } else {
         toast.error('Failed to delete criterion');
         setLoading(false);
@@ -89,36 +121,61 @@ const CriteriaSection = ({ projectId }) => {
         acc[curr._id] = curr;
         return acc;
       }, {});
-      for (const criterion of criteria) {
+
+      // Track if any updates failed
+      let hasError = false;
+
+      // Gather all promises to update criteria
+      const updatePromises = criteria.map(async (criterion) => {
         const orig = originalMap[criterion._id];
-        if (!orig) continue;
+        if (!orig) return null;
+
         if (criterion.name !== orig.name || criterion.range !== orig.range) {
           const result = await projectService.updateCriteria(
             criterion._id,
             criterion.name,
             criterion.range
           );
+
           if (result.status !== StatusCodes.OK) {
-            toast.error('Failed to save criteria');
-            setLoading(false);
-            return;
+            hasError = true;
           }
         }
+        return criterion;
+      });
+
+      // Wait for all updates to complete
+      await Promise.all(updatePromises);
+
+      if (hasError) {
+        toast.error('Failed to save some criteria');
+        // Force fetch to get the correct state
+        handleGetCriteria(true);
+      } else {
+        toast.success('Criteria saved successfully');
+        // Just update the originalCriteria to match current criteria
+        // to mark as not dirty anymore, without a refetch
+        setOriginalCriteria([...criteria]);
       }
-      toast.success('Criteria saved successfully');
-      handleGetCriteria();
     } catch (err) {
       console.error(err);
       toast.error('Error updating criteria');
+    } finally {
       setLoading(false);
     }
   };
 
   return (
     <div className="criteria-page-container">
-      {loading && (
+      {isInitialLoad && loading && (
         <div className="criteria-loading-overlay">
           <LoadingSpinner text="Loading criteria..." />
+        </div>
+      )}
+
+      {!isInitialLoad && loading && (
+        <div className="criteria-loading-overlay">
+          <LoadingSpinner text="Updating criteria..." />
         </div>
       )}
 
@@ -185,6 +242,12 @@ const CriteriaSection = ({ projectId }) => {
           </button>
         </div>
       ))}
+
+      {criteria.length === 0 && !loading && (
+        <div className="no-criteria-message">
+          No criteria defined yet. Click the + to add one.
+        </div>
+      )}
 
       {/* Save button appears only when edits exist */}
       {isDirty && (
