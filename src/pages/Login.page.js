@@ -55,6 +55,7 @@ function LoginPage() {
               name="identifier"
               value={formData.identifier}
               onChange={handleChange}
+              className="auth-input"
             />
           </div>
 
@@ -70,10 +71,11 @@ function LoginPage() {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              className="auth-input"
             />
           </div>
 
-          <button type="submit" className="btn btn-primary auth-submit-btn">
+          <button type="submit" className="auth-submit-btn">
             Login
           </button>
         </form>

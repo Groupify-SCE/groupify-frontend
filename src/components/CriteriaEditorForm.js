@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
 import { toast } from 'react-toastify';
 import projectService from '../services/project.service';
@@ -75,13 +74,13 @@ const CriteriaEditorForm = ({ participant, onClose, onSave }) => {
           return (
             <div className="criteria-field" key={idStr}>
               <label>{c.name}</label>
-              <InputNumber
+              <input
+                type="number"
+                placeholder={c.name}
                 value={criteriaValues?.[idStr] ?? 0}
-                onValueChange={(e) => handleChange(idStr, e.value)}
+                onChange={(e) => handleChange(idStr, e.target.value)}
                 min={0}
                 max={c.range}
-                showButtons
-                inputClassName="input-compact"
               />
             </div>
           );
@@ -90,9 +89,8 @@ const CriteriaEditorForm = ({ participant, onClose, onSave }) => {
       <div className="button-wrapper">
         <Button
           label="Save"
-          icon="pi pi-check"
           onClick={handleSave}
-          className="p-button-sm p-button-primary full-width"
+          className="p-button-primary full-width"
         />
       </div>
     </div>
