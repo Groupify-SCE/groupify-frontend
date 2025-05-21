@@ -9,4 +9,5 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
   },
+  ignorePatterns: ['/src/__tests__/**'],
 };
