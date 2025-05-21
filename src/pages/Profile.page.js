@@ -217,15 +217,15 @@ function ProfilePage() {
                   onChange={handleChange}
                 />
               </div>
+
+              <div className="button-section">
+                <button onClick={handleButtonClick} className="update-button">
+                  Update Info
+                </button>
+              </div>
             </div>
           </div>
         </form>
-
-        <div className="button-section">
-          <button onClick={handleButtonClick} className="update-button">
-            Update Info
-          </button>
-        </div>
       </div>
     </div>
   );

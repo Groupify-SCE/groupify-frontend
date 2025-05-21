@@ -61,11 +61,23 @@ const ParticipantsSection = ({ projectId }) => {
 
   const confirmDelete = (participant) => {
     confirmDialog({
-      message: `Are you sure you want to delete ${participant.firstName} ${participant.lastName}?`,
-      header: 'Confirm Delete',
+      message: (
+        <div className="confirm-delete-message">
+          <span className="highlight-name">
+            {participant.firstName} {participant.lastName}
+          </span>
+          <p>Are you sure you want to delete this participant?</p>
+          <p className="confirm-delete-details">
+            This action cannot be undone.
+          </p>
+        </div>
+      ),
+      header: 'Delete Participant',
       icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Yes',
-      rejectLabel: 'No',
+      acceptLabel: 'Delete',
+      rejectLabel: 'Cancel',
+      draggable: false,
+      resizable: false,
       accept: async () => {
         try {
           await projectService.deleteParticipant(projectId, participant._id);
@@ -79,6 +91,18 @@ const ParticipantsSection = ({ projectId }) => {
         }
       },
     });
+  };
+
+  const deleteButtonTemplate = (rowData) => {
+    return (
+      <div className="delete-button-cell">
+        <Button
+          icon="pi pi-trash"
+          className="p-button-text p-button-danger delete-trash-button"
+          onClick={() => confirmDelete(rowData)}
+        />
+      </div>
+    );
   };
 
   const handleSave = async () => {
@@ -115,23 +139,15 @@ const ParticipantsSection = ({ projectId }) => {
           tableStyle={{ minWidth: '50rem' }}
         >
           <Column
+            body={deleteButtonTemplate}
+            headerStyle={{ width: '4rem' }}
+            bodyStyle={{ textAlign: 'center' }}
+          />
+          <Column
             field="firstName"
             header="First Name"
             editor={textEditor}
-            body={(rowData) => (
-              <div
-                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-              >
-                <Button
-                  icon="pi pi-times"
-                  className="p-button-rounded p-button-text p-button-danger"
-                  style={{ width: '1.5rem', height: '1.5rem' }}
-                  onClick={() => confirmDelete(rowData)}
-                />
-                <span>{rowData.firstName}</span>
-              </div>
-            )}
-            style={{ width: '25%' }}
+            style={{ width: '25%', textAlign: 'center' }}
           />
           <Column
             field="lastName"
@@ -171,6 +187,13 @@ const ParticipantsSection = ({ projectId }) => {
         style={{ width: '400px' }}
         onHide={() => setCriteriaDialogVisible(false)}
         modal
+        className="criteria-dialog"
+        contentClassName="criteria-dialog-content"
+        headerClassName="criteria-dialog-header"
+        closeIcon="pi pi-times"
+        draggable={false}
+        resizable={false}
+        showHeader={true}
       >
         {selectedParticipant && (
           <CriteriaEditorForm
@@ -184,6 +207,7 @@ const ParticipantsSection = ({ projectId }) => {
                     : p
                 )
               );
+              setCriteriaDialogVisible(false);
             }}
           />
         )}
