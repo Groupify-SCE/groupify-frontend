@@ -19,7 +19,7 @@ export default function PreferencesModal({
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Set Your Preferences</h2>
+        <h2 data-testid="preferences-modal-title">Select Your Preferences</h2>
         {error && <div className="error-message">{error}</div>}
         <div className="form-group">
           <label>Select Your Name:</label>

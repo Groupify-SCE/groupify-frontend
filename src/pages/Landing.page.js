@@ -281,7 +281,10 @@ export default function LandingPage() {
             ))}
           </ul>
         )}
-        <div className="performance-graphs">
+        <div
+          className="performance-graphs"
+          data-testid={`performance-charts-${key}`}
+        >
           {chartConfigs[key].map((cfg) => (
             <PerfChart
               key={cfg.metric}
@@ -292,6 +295,7 @@ export default function LandingPage() {
               xLabel={cfg.xLabel}
               yLabel={cfg.yLabel}
               domain={cfg.domain}
+              data-testid={`chart-${key}-${cfg.metric}`}
             />
           ))}
         </div>
@@ -302,7 +306,10 @@ export default function LandingPage() {
   return (
     <div className="landing-container">
       {/* Hero */}
-      <section className={`hero ${heroVisible ? 'hero--visible' : ''}`}>
+      <section
+        className={`hero ${heroVisible ? 'hero--visible' : ''}`}
+        data-testid="hero-section"
+      >
         <div className="hero-background" />
         <div className="falling-elements" />
         <div className="hero-blobs">
@@ -328,12 +335,21 @@ export default function LandingPage() {
               onChange={(e) => setCode(e.target.value)}
               placeholder="Enter project code…"
               maxLength={9}
+              data-testid="project-code-input"
             />
-            <button className="btn-join" onClick={handleJoin}>
+            <button
+              className="btn-join"
+              onClick={handleJoin}
+              data-testid="join-button"
+            >
               Join Project →
             </button>
           </div>
-          <button className="btn-create pulse-animation" onClick={handleCreate}>
+          <button
+            className="btn-create pulse-animation"
+            onClick={handleCreate}
+            data-testid="create-button"
+          >
             Create Your Project
           </button>
         </div>
@@ -343,7 +359,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="algorithm-section genetic-section">
+      <section
+        className="algorithm-section genetic-section"
+        data-testid="genetic-algorithm-section"
+      >
         <div className="animated-emojis">
           <span className="flying-emoji dna-1">🧬</span>
           <span className="flying-emoji dna-2">🧬</span>
@@ -398,7 +417,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="algorithm-section bee-colony-section">
+      <section
+        className="algorithm-section bee-colony-section"
+        data-testid="bee-colony-section"
+      >
         <div className="animated-emojis">
           <span className="flying-emoji bee-1">🐝</span>
           <span className="flying-emoji bee-2">🐝</span>
