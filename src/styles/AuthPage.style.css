@@ -38,6 +38,13 @@
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
+.auth-loading {
+  opacity: 0.6;
+  pointer-events: none;
+  filter: blur(1px);
+  transition: all 0.3s ease;
+}
+
 .forgot-password-section {
   margin-top: 0rem; /* Changed from -7rem to provide space from navbar */
 }

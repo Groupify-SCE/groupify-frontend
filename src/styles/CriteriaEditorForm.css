@@ -163,3 +163,23 @@
     padding: 0.65rem !important;
   }
 }
+
+/* No criteria message styling */
+.no-criteria-message {
+  text-align: center;
+  padding: 1.5rem;
+  background: rgba(240, 240, 250, 0.5);
+  border-radius: 6px;
+  font-size: 14px;
+  color: #64748b;
+  border: 1px dashed rgba(140, 95, 242, 0.3);
+  margin: 1rem 0;
+  position: relative;
+  z-index: 1;
+}
+
+.dark .no-criteria-message {
+  background: rgba(30, 41, 59, 0.5);
+  color: #94a3b8;
+  border-color: rgba(140, 95, 242, 0.4);
+}
