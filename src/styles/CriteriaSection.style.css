@@ -1,9 +1,9 @@
 /********************************************************
-  PROJECT PAGE CONTAINER
+  CRITERIA PAGE CONTAINER
 ********************************************************/
-.project-page-container {
-  width: 90%;
-  max-width: 1200px;
+.criteria-page-container {
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   padding: 1.5rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -12,14 +12,14 @@
   gap: 1rem;
   direction: rtl;
   text-align: right;
-  background-color: #f8f8f8; /* Subtle light background */
 }
 
 /********************************************************
-  PROJECT BOXES (Uniform Cubes)
+  CRITERIA BOXES (Uniform Cubes)
 ********************************************************/
-.project-box {
-  height: 14rem;
+.criterion-box {
+  height: 16rem;
+  width: 16rem;
   padding: 1rem;
   padding-bottom: 4rem; /* space for delete button */
   border: 1px solid #ddd;
@@ -37,11 +37,11 @@
     transform 0.3s ease,
     box-shadow 0.3s ease;
 }
-.project-box:hover {
+.criterion-box:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
-.project-box:active {
+.criterion-box:active {
   transform: translateY(0);
 }
 
@@ -80,12 +80,13 @@
 /********************************************************
   LABELS & INPUTS
 ********************************************************/
-.project-box label {
+.criterion-box label {
   font-size: 0.85rem;
   font-weight: 600;
   color: #555;
 }
-.project-box input {
+.criterion-box input,
+.criterion-box select {
   width: 100%;
   padding: 0.5rem;
   border: 1px solid #ddd;
@@ -95,8 +96,35 @@
   color: #333;
   transition: border-color 0.3s;
 }
-.project-box input:focus {
+.criterion-box input:focus,
+.criterion-box select:focus {
   border-color: #8c5ff2;
+}
+
+.update-button {
+  font-size: 1.5rem;
+  font-weight: bold;
+  position: absolute;
+  bottom: 1.5rem;
+  left: 2.5rem;
+  background-color: #8c5ff2;
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.update-button:hover {
+  background-color: #5534a3;
+  transform: scale(1.05);
 }
 
 /********************************************************
@@ -129,7 +157,7 @@
   RESPONSIVE ADJUSTMENTS
 ********************************************************/
 @media (max-width: 600px) {
-  .project-page-container {
+  .criteria-page-container {
     grid-template-columns: 1fr;
   }
 }
@@ -137,24 +165,23 @@
 /********************************************************
   DARK MODE
 ********************************************************/
-.dark .project-page-container {
-  background-color: #121212;
-}
 
-.dark .project-box {
+.dark .criterion-box {
   background-color: #1e1e1e;
   border-color: #333;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
-.dark .project-box label {
+.dark .criterion-box label {
   color: #ffffff;
 }
-.dark .project-box input {
+.dark .criterion-box input,
+.dark .criterion-box select {
   background-color: #2a2a2a;
   border-color: #444;
   color: #eaeaea;
 }
-.dark .project-box input:focus {
+.dark .criterion-box input:focus,
+.dark .criterion-box select:focus {
   border-color: #8c5ff2;
 }
 

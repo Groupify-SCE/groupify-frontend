@@ -57,6 +57,129 @@ class ProjectService extends BackendManager {
       }),
     });
   }
+
+  async addCriterion(projectId) {
+    return await this.sendRequest(`criteria/add/${projectId}`, {
+      credentials: 'include',
+      method: 'POST',
+    });
+  }
+
+  async getAllCriteria(projectId) {
+    return await this.sendRequest(`criteria/get-all/${projectId}`, {
+      credentials: 'include',
+      method: 'GET',
+    });
+  }
+
+  async deleteCriterion(criterionId) {
+    return await this.sendRequest(`criteria/delete/${criterionId}`, {
+      credentials: 'include',
+      method: 'DELETE',
+    });
+  }
+
+  async updateCriteria(criterionId, name, range) {
+    return await this.sendRequest(`criteria/update`, {
+      credentials: 'include',
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        criterionId,
+        name,
+        range,
+      }),
+    });
+  }
+
+  async addParticipant(projectId, firstName, lastName, tz) {
+    return await this.sendRequest('participants/add', {
+      credentials: 'include',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ projectId, firstName, lastName, tz }),
+    });
+  }
+
+  async getAllParticipants(projectId) {
+    return await this.sendRequest(`participants/get-all/${projectId}`, {
+      credentials: 'include',
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  async getParticipantCriteria(participantId) {
+    const res = await this.sendRequest(
+      `participants/criteria/get/${participantId}`,
+      {
+        credentials: 'include',
+        method: 'GET',
+      }
+    );
+
+    return await res.json();
+  }
+
+  async submitParticipantCriteria(participantId, criteria) {
+    return await this.sendRequest(
+      `participants/criteria/update/${participantId}`,
+      {
+        credentials: 'include',
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ criteria }),
+      }
+    );
+  }
+
+  async updateAllParticipants(projectId, participants) {
+    return await this.sendRequest(`participants/update-all/${projectId}`, {
+      credentials: 'include',
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ participants }),
+    });
+  }
+
+  async deleteParticipant(projectId, participantId) {
+    return await this.sendRequest(
+      `participants/delete/${projectId}/${participantId}`,
+      {
+        credentials: 'include',
+        method: 'DELETE',
+      }
+    );
+  }
+
+  async searchProject(code) {
+    return await this.sendRequest(`search/${code}`, {
+      credentials: 'include',
+      method: 'GET',
+    });
+  }
+
+  async savePreferences(selectedParticipant, participantId, preferences) {
+    console.log(selectedParticipant, participantId, preferences);
+    return await this.sendRequest(`preferences/save`, {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        selectedParticipant,
+        participantId,
+        preferences,
+      }),
+    });
+  }
 }
 
 const projectService = ProjectService.getInstance();

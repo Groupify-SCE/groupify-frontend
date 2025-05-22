@@ -1,28 +1,139 @@
+/* 1) Load Satoshi under a single family name /
+/*
+
+@license
+
+
+
+Font Family: Satoshi
+
+Designed by: Deni Anggara
+
+URL: https://www.fontshare.com/fonts/satoshi
+
+© 2025 Indian Type Foundry
+/
 @font-face {
-  font-family: 'DMSans';
-  src: url('./assets/fonts/DMSans/DMSans-Regular.ttf') format('truetype');
-  font-weight: 400;
+font-family: 'Satoshi';
+src: url('./assets/fonts/Satoshi/Satoshi-Light.woff2') format('woff2'),
+url('./assets/fonts/Satoshi/Satoshi-Light.woff') format('woff'),
+url('./assets/fonts/Satoshi/Satoshi-Light.ttf') format('truetype');
+font-weight: 300;
+font-display: swap;
+font-style: normal;
+}
+@font-face {
+font-family: 'Satoshi';
+src: url('./assets/fonts/Satoshi/Satoshi-LightItalic.woff2') format('woff2'),
+url('./assets/fonts/Satoshi/Satoshi-LightItalic.woff') format('woff'),
+url('./assets/fonts/Satoshi/Satoshi-LightItalic.ttf') format('truetype');
+font-weight: 300;
+font-display: swap;
+font-style: italic;
+}
+@font-face {
+font-family: 'Satoshi';
+src: url('./assets/fonts/Satoshi/Satoshi-Regular.woff2') format('woff2'),
+url('./assets/fonts/Satoshi/Satoshi-Regular.woff') format('woff'),
+url('./assets/fonts/Satoshi/Satoshi-Regular.ttf') format('truetype');
+font-weight: 400;
+font-display: swap;
+font-style: normal;
+}
+@font-face {
+font-family: 'Satoshi';
+src: url('./assets/fonts/Satoshi/Satoshi-Italic.woff2') format('woff2'),
+url('./assets/fonts/Satoshi/Satoshi-Italic.woff') format('woff'),
+url('./assets/fonts/Satoshi/Satoshi-Italic.ttf') format('truetype');
+font-weight: 400;
+font-display: swap;
+font-style: italic;
+}
+@font-face {
+font-family: 'Satoshi';
+src: url('./assets/fonts/Satoshi/Satoshi-Medium.woff2') format('woff2'),
+url('./assets/fonts/Satoshi/Satoshi-Medium.woff') format('woff'),
+url('./assets/fonts/Satoshi/Satoshi-Medium.ttf') format('truetype');
+font-weight: 500;
+font-display: swap;
+font-style: normal;
+}
+@font-face {
+font-family: 'Satoshi';
+src: url('./assets/fonts/Satoshi/Satoshi-MediumItalic.woff2') format('woff2'),
+url('./assets/fonts/Satoshi/Satoshi-MediumItalic.woff') format('woff'),
+url('./assets/fonts/Satoshi/Satoshi-MediumItalic.ttf') format('truetype');
+font-weight: 500;
+font-display: swap;
+font-style: italic;
+}
+@font-face {
+font-family: 'Satoshi';
+src: url('./assets/fonts/Satoshi/Satoshi-Bold.woff2') format('woff2'),
+url('./assets/fonts/Satoshi/Satoshi-Bold.woff') format('woff'),
+url('./assets/fonts/Satoshi/Satoshi-Bold.ttf') format('truetype');
+font-weight: 700;
+font-display: swap;
+font-style: normal;
+}
+@font-face {
+font-family: 'Satoshi';
+src: url('./assets/fonts/Satoshi/Satoshi-BoldItalic.woff2') format('woff2'),
+url('./assets/fonts/Satoshi/Satoshi-BoldItalic.woff') format('woff'),
+url('./assets/fonts/Satoshi/Satoshi-BoldItalic.ttf') format('truetype');
+font-weight: 700;
+font-display: swap;
+font-style: italic;
+}
+@font-face {
+font-family: 'Satoshi';
+src: url('./assets/fonts/Satoshi/Satoshi-Black.woff2') format('woff2'),
+url('./assets/fonts/Satoshi/Satoshi-Black.woff') format('woff'),
+url('./assets/fonts/Satoshi/Satoshi-Black.ttf') format('truetype');
+font-weight: 900;
+font-display: swap;
+font-style: normal;
+}
+@font-face {
+font-family: 'Satoshi';
+src: url('./assets/fonts/Satoshi/Satoshi-BlackItalic.woff2') format('woff2'),
+url('./assets/fonts/Satoshi/Satoshi-BlackItalic.woff') format('woff'),
+url('./assets/fonts/Satoshi/Satoshi-BlackItalic.ttf') format('truetype');
+font-weight: 900;
+font-display: swap;
+font-style: italic;
+}
+/ Variable axes for all weights */
+@font-face {
+  font-family: 'Satoshi';
+  src:
+    url('./assets/fonts/Satoshi/Satoshi-Variable.woff2') format('woff2'),
+    url('./assets/fonts/Satoshi/Satoshi-Variable.woff') format('woff'),
+    url('./assets/fonts/Satoshi/Satoshi-Variable.ttf') format('truetype');
+  font-weight: 300 900;
+  font-display: swap;
   font-style: normal;
 }
-
 @font-face {
-  font-family: 'DMSans';
-  src: url('./assets/fonts/DMSans/DMSans-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'DMSans';
-  src: url('./assets/fonts/DMSans/DMSans-Italic.ttf') format('truetype');
-  font-weight: 400;
+  font-family: 'Satoshi';
+  src:
+    url('./assets/fonts/Satoshi/Satoshi-VariableItalic.woff2') format('woff2'),
+    url('./assets/fonts/Satoshi/Satoshi-VariableItalic.woff') format('woff'),
+    url('./assets/fonts/Satoshi/Satoshi-VariableItalic.ttf') format('truetype');
+  font-weight: 300 900;
+  font-display: swap;
   font-style: italic;
 }
 
-/* Apply font to all elements by default */
+/* 2) Apply globally */
+html,
+body,
 * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
   font-family:
-    'DMSans',
+    'Satoshi',
     -apple-system,
     BlinkMacSystemFont,
     'Segoe UI',
@@ -30,58 +141,79 @@
     sans-serif;
 }
 
+/* Existing imports and styles */
+@import 'primereact/resources/themes/lara-light-indigo/theme.css';
+@import 'primereact/resources/primereact.min.css';
+@import 'primeicons/primeicons.css';
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+html,
 body {
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #fff;
-  color: #333;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
-code {
-  font-family:
-    source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
-
-/********************************************************
-  GLOBAL RESETS / UTILITY (optional)
-********************************************************/
-/* Hide dark-mode icons by default in the opposing mode */
+/* Dark-mode helpers */
 .dark-mode-dark {
   display: none;
 }
-
 .dark .dark-mode-dark {
   display: inline-block;
 }
-
 .dark .dark-mode-light {
   display: none;
 }
-
-/* If you have a .light-only or .dark-only image, handle that: */
-.dark .light-only {
-  display: none !important;
-}
-
-.dark-only {
+\ .dark-only {
   display: none;
 }
-
 .dark .dark-only {
   display: inline-block;
 }
 
-/* Simple box-sizing reset for consistency */
-* {
-  box-sizing: border-box;
-}
-
-.dark body {
+dark body {
   background-color: #16151f;
   color: #fff;
 }
 
+/* Inputs */
 input {
   border: 1px solid #e2e2e2;
   border-radius: 0.5rem;
@@ -91,26 +223,20 @@ input {
   outline: none;
   transition: border-color 0.2s;
 }
-
 input::placeholder {
   color: #999;
 }
-
 input:focus {
-  border-color: #8c5ff2; /* Your accent color */
+  border-color: #8c5ff2;
 }
-
-/* Dark mode overrides for any <input> */
 .dark input {
   background-color: transparent;
   color: #fff;
   border-color: #444;
 }
-
 .dark input::placeholder {
   color: #999;
 }
-
 .dark input:focus {
   border-color: #8c5ff2;
 }
