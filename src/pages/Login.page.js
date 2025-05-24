@@ -4,6 +4,7 @@ import '../styles/AuthPage.style.css';
 import authService from '../services/auth.service';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 function LoginPage() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ function LoginPage() {
     password: '',
   });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -22,20 +24,31 @@ function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await authService.login(formData);
-    if (response.status === StatusCodes.OK) {
-      navigate('/profile');
-      toast.success('Login Successful');
-    } else {
-      toast.error('Invalid Login Credentials');
-      const responseData = await response.json();
-      setError(responseData.response);
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await authService.login(formData);
+      if (response.status === StatusCodes.OK) {
+        navigate('/profile');
+        toast.success('Login Successful');
+      } else {
+        toast.error('Invalid Login Credentials');
+        const responseData = await response.json();
+        setError(responseData.response);
+      }
+    } catch (error) {
+      toast.error('Login failed. Please try again.');
+      setError('An unexpected error occurred. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <section className="auth-section">
-      <div className="auth-container">
+      {loading && <LoadingSpinner text="Logging in..." />}
+      <div className={`auth-container ${loading ? 'auth-loading' : ''}`}>
         <h1 className="auth-title">Login To Your Account</h1>
         <p className="auth-subtitle">
           Login to your account using an identifier and a password.
@@ -55,6 +68,8 @@ function LoginPage() {
               name="identifier"
               value={formData.identifier}
               onChange={handleChange}
+              className="auth-input"
+              disabled={loading}
             />
           </div>
 
@@ -70,11 +85,13 @@ function LoginPage() {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              className="auth-input"
+              disabled={loading}
             />
           </div>
 
-          <button type="submit" className="btn btn-primary auth-submit-btn">
-            Login
+          <button type="submit" className="auth-submit-btn" disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 

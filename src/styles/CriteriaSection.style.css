@@ -5,62 +5,125 @@
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
   direction: rtl;
   text-align: right;
+  position: relative;
+}
+
+/* Background glow effect */
+.criteria-page-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at top right,
+    rgba(140, 95, 242, 0.08),
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
 }
 
 /********************************************************
   CRITERIA BOXES (Uniform Cubes)
 ********************************************************/
 .criterion-box {
-  height: 16rem;
-  width: 16rem;
-  padding: 1rem;
-  padding-bottom: 4rem; /* space for delete button */
-  border: 1px solid #ddd;
-  background-color: #fff;
-  border-radius: 8px;
+  height: auto;
+  min-height: 16rem;
+  width: 100%;
+  padding: 1.5rem;
+  padding-bottom: 4.5rem; /* space for delete button */
+  border: 1px solid rgba(140, 95, 242, 0.15);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.8rem;
   position: relative;
   cursor: pointer;
   direction: ltr;
   text-align: left;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+    transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.3s ease;
+  overflow: hidden;
 }
+
+.criterion-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .criterion-box:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(140, 95, 242, 0.15);
+  border-color: rgba(140, 95, 242, 0.3);
 }
+
+.criterion-box:hover::before {
+  opacity: 1;
+}
+
 .criterion-box:active {
-  transform: translateY(0);
+  transform: translateY(-2px);
 }
 
 /********************************************************
   ADD BOX (Plus Cube)
 ********************************************************/
 .add-box {
-  border: 2px dashed #8c5ff2;
+  border: 2px dashed rgba(140, 95, 242, 0.4);
   position: relative;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
   transition:
     background-color 0.3s,
-    border-color 0.3s;
+    border-color 0.3s,
+    transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 }
+
+.add-box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: radial-gradient(
+    circle at center,
+    rgba(140, 95, 242, 0.05),
+    transparent 70%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
 .add-box:hover {
-  background-color: #f0f0f0;
-  border-color: #6b3add;
+  background-color: rgba(248, 248, 252, 0.9);
+  border-color: #8c5ff2;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(140, 95, 242, 0.2);
 }
 
 /* Centered plus sign */
@@ -75,56 +138,103 @@
   margin: 0;
   pointer-events: none;
   color: #8c5ff2;
+  text-shadow: 0 2px 10px rgba(140, 95, 242, 0.3);
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.add-box:hover .plus-sign {
+  transform: translate(-50%, -50%) scale(1.1);
+  text-shadow: 0 3px 15px rgba(140, 95, 242, 0.5);
 }
 
 /********************************************************
   LABELS & INPUTS
 ********************************************************/
 .criterion-box label {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: #555;
+  color: #444;
+  margin-bottom: 0.3rem;
+  transition: color 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
+
 .criterion-box input,
 .criterion-box select {
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  background-color: #fafafa;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(140, 95, 242, 0.2);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background-color: rgba(255, 255, 255, 0.9);
   color: #333;
-  transition: border-color 0.3s;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 }
+
 .criterion-box input:focus,
 .criterion-box select:focus {
   border-color: #8c5ff2;
+  box-shadow:
+    0 0 0 3px rgba(140, 95, 242, 0.2),
+    0 4px 12px rgba(140, 95, 242, 0.1);
+  outline: none;
+  transform: translateY(-1px);
 }
 
 .update-button {
-  font-size: 1.5rem;
-  font-weight: bold;
-  position: absolute;
-  bottom: 1.5rem;
-  left: 2.5rem;
-  background-color: #8c5ff2;
+  font-size: 1.2rem;
+  font-weight: 600;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: linear-gradient(135deg, #8c5ff2, #6b3add);
   color: #fff;
   border: none;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.2rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding: 1rem 2rem;
   cursor: pointer;
-  transition:
-    transform 0.3s ease,
-    background-color 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 5px 20px rgba(107, 58, 221, 0.3);
+  z-index: 100;
+}
+
+.update-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.7s ease;
 }
 
 .update-button:hover {
-  background-color: #5534a3;
-  transform: scale(1.05);
+  background: linear-gradient(135deg, #9d77ff, #7b52e6);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(107, 58, 221, 0.4);
+}
+
+.update-button:hover::before {
+  left: 100%;
+}
+
+.update-button:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(107, 58, 221, 0.35);
 }
 
 /********************************************************
@@ -132,11 +242,11 @@
 ********************************************************/
 .delete-button {
   position: absolute;
-  bottom: 1rem;
-  left: 1rem;
-  width: 40px;
-  height: 40px;
-  background-color: #d32f2f;
+  bottom: 1.2rem;
+  left: 1.2rem;
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #ff5b5b, #d32f2f);
   color: #fff;
   border: none;
   border-radius: 50%;
@@ -144,13 +254,19 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition:
-    transform 0.3s ease,
-    background-color 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 3px 10px rgba(211, 47, 47, 0.2);
+  z-index: 2;
 }
+
 .delete-button:hover {
-  background-color: #c62828;
-  transform: scale(1.05);
+  background: linear-gradient(135deg, #ff7575, #c62828);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 5px 15px rgba(211, 47, 47, 0.3);
+}
+
+.delete-button:active {
+  transform: translateY(0) scale(0.98);
 }
 
 /********************************************************
@@ -159,6 +275,19 @@
 @media (max-width: 600px) {
   .criteria-page-container {
     grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+
+  .criterion-box {
+    min-height: 14rem;
+  }
+
+  .update-button {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
   }
 }
 
@@ -167,35 +296,99 @@
 ********************************************************/
 
 .dark .criterion-box {
-  background-color: #1e1e1e;
-  border-color: #333;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  background-color: rgba(30, 35, 50, 0.7);
+  border-color: rgba(140, 95, 242, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
+
+.dark .criterion-box::before {
+  background: linear-gradient(135deg, rgba(140, 95, 242, 0.1), transparent 80%);
+}
+
 .dark .criterion-box label {
-  color: #ffffff;
+  color: #cbd5e0;
 }
+
 .dark .criterion-box input,
 .dark .criterion-box select {
-  background-color: #2a2a2a;
-  border-color: #444;
-  color: #eaeaea;
+  background-color: rgba(45, 55, 72, 0.7);
+  border-color: rgba(140, 95, 242, 0.3);
+  color: #e2e8f0;
 }
+
 .dark .criterion-box input:focus,
 .dark .criterion-box select:focus {
   border-color: #8c5ff2;
+  box-shadow:
+    0 0 0 3px rgba(140, 95, 242, 0.3),
+    0 4px 12px rgba(140, 95, 242, 0.15);
 }
 
 .dark .add-box {
-  border-color: #8c5ff2;
-  background-color: #1e1e1e;
+  border-color: rgba(140, 95, 242, 0.4);
+  background-color: rgba(30, 35, 50, 0.7);
 }
+
+.dark .add-box::after {
+  background: radial-gradient(
+    circle at center,
+    rgba(140, 95, 242, 0.1),
+    transparent 70%
+  );
+}
+
+.dark .add-box:hover {
+  background-color: rgba(35, 40, 60, 0.9);
+  border-color: #8c5ff2;
+}
+
 .dark .plus-sign {
-  color: #8c5ff2;
+  color: #9d77ff;
+  text-shadow: 0 2px 10px rgba(140, 95, 242, 0.4);
 }
 
 .dark .delete-button {
-  background-color: #b71c1c;
+  background: linear-gradient(135deg, #ff5b5b, #d32f2f);
+  box-shadow: 0 3px 10px rgba(211, 47, 47, 0.3);
 }
+
 .dark .delete-button:hover {
-  background-color: #a50e0e;
+  background: linear-gradient(135deg, #ff7575, #c62828);
+  box-shadow: 0 5px 15px rgba(211, 47, 47, 0.4);
+}
+
+.dark .update-button {
+  background: linear-gradient(135deg, #8c5ff2, #6b3add);
+  box-shadow: 0 5px 20px rgba(107, 58, 221, 0.4);
+}
+
+.dark .update-button:hover {
+  background: linear-gradient(135deg, #9d77ff, #7b52e6);
+  box-shadow: 0 8px 25px rgba(107, 58, 221, 0.5);
+}
+
+.dark .criteria-page-container::before {
+  background: radial-gradient(
+    circle at top right,
+    rgba(140, 95, 242, 0.12),
+    transparent 70%
+  );
+}
+
+.criteria-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.dark .criteria-loading-overlay {
+  background: rgba(30, 35, 50, 0.7);
 }

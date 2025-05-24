@@ -5,32 +5,48 @@ import projectService from '../services/project.service';
 import '../styles/ProjectPage.style.css';
 import ConfirmDeletion from '../components/ConfirmDeletion';
 import { StatusCodes } from 'http-status-codes';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 function ProjectPage() {
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     handleGetAll();
   }, []);
 
   const handleAddProject = async () => {
-    const result = await projectService.create();
-    if (result.status === StatusCodes.OK) {
-      handleGetAll();
-      toast.success('Created Project Successfully');
-    } else {
-      toast.error('Failled Creating Project');
+    setLoading(true);
+    try {
+      const result = await projectService.create();
+      if (result.status === StatusCodes.OK) {
+        handleGetAll();
+        toast.success('Created Project Successfully');
+      } else {
+        toast.error('Failed Creating Project');
+        setLoading(false);
+      }
+    } catch (error) {
+      toast.error('Error creating project');
+      setLoading(false);
     }
   };
 
   const handleGetAll = async () => {
-    const result = await projectService.getAll();
-    const data = await result.json();
-    if (result.status === StatusCodes.OK) {
-      setProjects(data.response);
-    } else {
-      toast.error(data.response);
+    setLoading(true);
+    try {
+      const result = await projectService.getAll();
+      const data = await result.json();
+      if (result.status === StatusCodes.OK) {
+        setProjects(data.response);
+      } else {
+        toast.error(data.response);
+      }
+    } catch (error) {
+      toast.error('Error loading projects');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -40,12 +56,19 @@ function ProjectPage() {
       <ConfirmDeletion
         onConfirm={async () => {
           toast.dismiss();
-          const result = await projectService.delete(id);
-          if (result.status === StatusCodes.OK) {
-            toast.success('Deleted Project Successfully');
-            setProjects((prev) => prev.filter((proj) => proj._id !== id));
-          } else {
-            toast.error('Failled deleting Project');
+          setLoading(true);
+          try {
+            const result = await projectService.delete(id);
+            if (result.status === StatusCodes.OK) {
+              toast.success('Deleted Project Successfully');
+              setProjects((prev) => prev.filter((proj) => proj._id !== id));
+            } else {
+              toast.error('Failed deleting Project');
+            }
+          } catch (error) {
+            toast.error('Error deleting project');
+          } finally {
+            setLoading(false);
           }
         }}
         onCancel={() => toast.dismiss()}
@@ -62,6 +85,10 @@ function ProjectPage() {
   const handleCubeClick = (id) => {
     navigate(`/project-management/${id}`);
   };
+
+  if (loading) {
+    return <LoadingSpinner fullPage text="Loading projects..." />;
+  }
 
   return (
     <div className="project-page-container">

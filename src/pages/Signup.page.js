@@ -63,6 +63,7 @@ function SignupPage() {
               name="username"
               value={formData.username}
               onChange={handleChange}
+              className="auth-input"
             />
           </div>
 
@@ -78,6 +79,7 @@ function SignupPage() {
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
+              className="auth-input"
             />
           </div>
 
@@ -93,6 +95,7 @@ function SignupPage() {
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
+              className="auth-input"
             />
           </div>
 
@@ -108,6 +111,7 @@ function SignupPage() {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              className="auth-input"
             />
           </div>
 
@@ -125,6 +129,7 @@ function SignupPage() {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              className="auth-input"
             />
           </div>
 
@@ -140,10 +145,11 @@ function SignupPage() {
               name="passwordConfirmation"
               value={formData.passwordConfirmation}
               onChange={handleChange}
+              className="auth-input"
             />
           </div>
 
-          <button type="submit" className="btn btn-primary auth-submit-btn">
+          <button type="submit" className="auth-submit-btn">
             Sign Up
           </button>
         </form>

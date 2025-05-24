@@ -11,13 +11,18 @@ import { Button } from 'primereact/button';
 import CriteriaEditorForm from '../components/CriteriaEditorForm';
 import { confirmDialog } from 'primereact/confirmdialog';
 import { ConfirmDialog } from 'primereact/confirmdialog';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const ParticipantsSection = ({ projectId }) => {
   const [participants, setParticipants] = useState([]);
   const [criteriaDialogVisible, setCriteriaDialogVisible] = useState(false);
   const [selectedParticipant, setSelectedParticipant] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [criteriaDefs, setCriteriaDefs] = useState(null);
+  const [, setCriteriaLoading] = useState(false);
 
   const fetchParticipants = useCallback(async () => {
+    setLoading(true);
     try {
       const result = await projectService.getAllParticipants(projectId);
       const data = await result.json();
@@ -29,12 +34,41 @@ const ParticipantsSection = ({ projectId }) => {
     } catch (err) {
       console.error(err);
       toast.error('Error fetching participants');
+    } finally {
+      setLoading(false);
     }
   }, [projectId]);
 
+  // Fetch criteria definitions once and cache them
+  const fetchCriteriaDefs = useCallback(async () => {
+    if (criteriaDefs) return criteriaDefs; // Return cached data if available
+
+    setCriteriaLoading(true);
+    try {
+      const result = await projectService.getAllCriteria(projectId);
+      if (result.status === StatusCodes.OK) {
+        const data = await result.json();
+        const definitions = data.response || [];
+        setCriteriaDefs(definitions);
+        return definitions;
+      } else {
+        toast.error('Failed to fetch criteria definitions');
+        return [];
+      }
+    } catch (err) {
+      console.error('Error fetching criteria definitions:', err);
+      toast.error('Error fetching criteria definitions');
+      return [];
+    } finally {
+      setCriteriaLoading(false);
+    }
+  }, [projectId, criteriaDefs]);
+
   useEffect(() => {
     fetchParticipants();
-  }, [projectId, fetchParticipants]);
+    // Prefetch criteria definitions when component mounts
+    fetchCriteriaDefs();
+  }, [projectId, fetchParticipants, fetchCriteriaDefs]);
 
   const textEditor = (options) => {
     return (
@@ -61,12 +95,25 @@ const ParticipantsSection = ({ projectId }) => {
 
   const confirmDelete = (participant) => {
     confirmDialog({
-      message: `Are you sure you want to delete ${participant.firstName} ${participant.lastName}?`,
-      header: 'Confirm Delete',
+      message: (
+        <div className="confirm-delete-message">
+          <span className="highlight-name">
+            {participant.firstName} {participant.lastName}
+          </span>
+          <p>Are you sure you want to delete this participant?</p>
+          <p className="confirm-delete-details">
+            This action cannot be undone.
+          </p>
+        </div>
+      ),
+      header: 'Delete Participant',
       icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Yes',
-      rejectLabel: 'No',
+      acceptLabel: 'Delete',
+      rejectLabel: 'Cancel',
+      draggable: false,
+      resizable: false,
       accept: async () => {
+        setLoading(true);
         try {
           await projectService.deleteParticipant(projectId, participant._id);
           setParticipants((prev) =>
@@ -76,12 +123,28 @@ const ParticipantsSection = ({ projectId }) => {
         } catch (err) {
           console.error(err);
           toast.error('Failed to delete participant');
+        } finally {
+          setLoading(false);
         }
       },
     });
   };
 
+  const deleteButtonTemplate = (rowData) => {
+    return (
+      <div className="delete-button-cell">
+        <Button
+          icon="pi pi-trash"
+          className="p-button-text p-button-danger delete-trash-button"
+          onClick={() => confirmDelete(rowData)}
+          disabled={loading}
+        />
+      </div>
+    );
+  };
+
   const handleSave = async () => {
+    setLoading(true);
     try {
       const response = await projectService.updateAllParticipants(
         projectId,
@@ -96,11 +159,19 @@ const ParticipantsSection = ({ projectId }) => {
     } catch (err) {
       console.error(err);
       toast.error('Error saving participants list');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="participants-section">
+      {loading && (
+        <div className="participants-loading-overlay">
+          <LoadingSpinner text="Loading participants..." />
+        </div>
+      )}
+
       <AddParticipantForm
         projectId={projectId}
         onParticipantAdded={fetchParticipants}
@@ -113,25 +184,18 @@ const ParticipantsSection = ({ projectId }) => {
           dataKey="_id"
           onRowEditComplete={onRowEditComplete}
           tableStyle={{ minWidth: '50rem' }}
+          loading={loading}
         >
+          <Column
+            body={deleteButtonTemplate}
+            headerStyle={{ width: '4rem' }}
+            bodyStyle={{ textAlign: 'center' }}
+          />
           <Column
             field="firstName"
             header="First Name"
             editor={textEditor}
-            body={(rowData) => (
-              <div
-                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-              >
-                <Button
-                  icon="pi pi-times"
-                  className="p-button-rounded p-button-text p-button-danger"
-                  style={{ width: '1.5rem', height: '1.5rem' }}
-                  onClick={() => confirmDelete(rowData)}
-                />
-                <span>{rowData.firstName}</span>
-              </div>
-            )}
-            style={{ width: '25%' }}
+            style={{ width: '25%', textAlign: 'center' }}
           />
           <Column
             field="lastName"
@@ -153,6 +217,7 @@ const ParticipantsSection = ({ projectId }) => {
                 icon="pi pi-pencil"
                 className="p-button-text"
                 onClick={() => openCriteriaDialog(rowData)}
+                disabled={loading}
               />
             )}
             style={{ width: '15%' }}
@@ -171,10 +236,18 @@ const ParticipantsSection = ({ projectId }) => {
         style={{ width: '400px' }}
         onHide={() => setCriteriaDialogVisible(false)}
         modal
+        className="criteria-dialog"
+        contentClassName="criteria-dialog-content"
+        headerClassName="criteria-dialog-header"
+        closeIcon="pi pi-times"
+        draggable={false}
+        resizable={false}
+        showHeader={true}
       >
         {selectedParticipant && (
           <CriteriaEditorForm
             participant={selectedParticipant}
+            preloadedCriteria={criteriaDefs}
             onClose={() => setCriteriaDialogVisible(false)}
             onSave={(updatedCriteria) => {
               setParticipants((prev) =>
@@ -184,7 +257,9 @@ const ParticipantsSection = ({ projectId }) => {
                     : p
                 )
               );
+              setCriteriaDialogVisible(false);
             }}
+            onLoad={() => {}}
           />
         )}
       </Dialog>
@@ -195,6 +270,7 @@ const ParticipantsSection = ({ projectId }) => {
         className="p-button-success"
         style={{ marginTop: '1rem', alignSelf: 'flex-start' }}
         onClick={handleSave}
+        disabled={loading}
       />
       <ConfirmDialog />
     </div>

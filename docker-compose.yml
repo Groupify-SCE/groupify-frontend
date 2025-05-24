@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  frontend-dev:
+    container_name: groupify-frontend-dev
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=${REACT_APP_API_URL:-http://localhost:3001}
+      - WATCHPACK_POLLING=true
+    networks:
+      - groupify-network
+    stdin_open: true
+    command: npm start
+
+  frontend-prod:
+    container_name: groupify-frontend-prod
+    build:
+      context: .
+      target: production
+    ports:
+      - '80:80'
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=${REACT_APP_API_URL:-http://localhost:3001}
+    networks:
+      - groupify-network
+    profiles: ['prod']
+    depends_on:
+      - frontend-build
+
+  frontend-build:
+    container_name: groupify-frontend-build
+    build:
+      context: .
+      target: builder
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=${REACT_APP_API_URL:-http://localhost:3001}
+    volumes:
+      - build_volume:/app/build
+    networks:
+      - groupify-network
+    profiles: ['prod']
+    command: npm run build
+
+networks:
+  groupify-network:
+    driver: bridge
+
+volumes:
+  build_volume:

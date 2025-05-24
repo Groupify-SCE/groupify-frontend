@@ -4,12 +4,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/Landing.page';
 import LoginPage from './pages/Login.page';
 import SignupPage from './pages/Signup.page';
-import Navbar from './components/Navbar';
+import NavBar from './components/NavBar';
 import ProfilePage from './pages/Profile.page';
 import ForgotPasswordPage from './pages/ForgotPassword.page';
 import ResetPasswordPage from './pages/ResetPassword.page';
 import ProjectPage from './pages/Project.page';
 import ProjectManagementPage from './pages/ProjectManagement.page';
+import GroupsPage from './pages/Groups.page';
 import { ToastContainer } from 'react-toastify';
 import './styles/Alert.style.css';
 
@@ -23,7 +24,7 @@ function App() {
 
   return (
     <Router>
-      <Navbar />
+      <NavBar />
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -47,6 +48,7 @@ function App() {
           path="/project-management/:id"
           element={<ProjectManagementPage />}
         />
+        <Route path="/groups/:id" element={<GroupsPage />} />
       </Routes>
     </Router>
   );
