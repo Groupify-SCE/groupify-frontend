@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ProfilePage from '../../pages/Profile.page';
-import userService from '../../components/';
+import userService from '../../services/user.service';
 
 jest.mock('../../services/user.service');
 
