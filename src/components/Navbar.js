@@ -6,7 +6,7 @@ import DarkModeToggle from './DarkModeToggle';
 import authService from '../services/auth.service';
 import { toast } from 'react-toastify';
 
-const Navbar = () => {
+const NavBar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -162,4 +162,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavBar;

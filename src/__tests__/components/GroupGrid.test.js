@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import GroupGrid from '../../components/GroupGrid';
+import GroupGrid from '../../components/';
 
 describe('GroupGrid', () => {
   const groupsMock = [
