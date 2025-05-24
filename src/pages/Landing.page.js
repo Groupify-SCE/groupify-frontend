@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import Papa from 'papaparse';
 import PerfChart from '../components/PerfChart';
 import PreferencesModal from '../components/PreferencesModal';
+import LoadingSpinner from '../components/LoadingSpinner';
 import '../styles/LandingPage.style.css';
 import projectService from '../services/project.service';
+import healthService from '../services/health.service';
 import { toast } from 'react-toastify';
 import abcIterationsFitness from '../assets/data/ABC/Iterations_960_Fitness.csv';
 import abcIterationsTime from '../assets/data/ABC/Iterations_960_Time.csv';
@@ -21,6 +23,8 @@ export default function LandingPage() {
   const [heroVisible, setHeroVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingErrors, setLoadingErrors] = useState([]);
+  const [isBackendLoading, setIsBackendLoading] = useState(true);
+  const [backendError, setBackendError] = useState(null);
   const [algorithmData, setAlgorithmData] = useState({
     beeColony: {
       performance: [],
@@ -124,10 +128,32 @@ export default function LandingPage() {
   };
 
   useEffect(() => {
+    checkBackendHealth();
     loadCSVData();
     setHeroVisible(true);
     createFallingElements();
   }, []);
+
+  const checkBackendHealth = async () => {
+    setIsBackendLoading(true);
+    setBackendError(null);
+
+    try {
+      const isHealthy = await healthService.waitForBackendHealth();
+      if (!isHealthy) {
+        setBackendError(
+          'Backend is not responding. Please check if the server is running.'
+        );
+      }
+    } catch (error) {
+      console.error('Backend health check error:', error);
+      setBackendError(
+        'Failed to connect to backend. Please check your network connection.'
+      );
+    } finally {
+      setIsBackendLoading(false);
+    }
+  };
 
   const loadCSVData = async () => {
     setIsLoading(true);
@@ -303,6 +329,57 @@ export default function LandingPage() {
     </section>
   );
 
+  // Show loading spinner while backend is being checked
+  if (isBackendLoading) {
+    return (
+      <LoadingSpinner
+        fullPage={true}
+        text="Connecting to backend... This may take a moment as the server wakes up."
+      />
+    );
+  }
+
+  // Show error message if backend health check failed
+  if (backendError) {
+    return (
+      <div className="landing-container">
+        <div
+          className="backend-error-container"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100vh',
+            padding: '2rem',
+            textAlign: 'center',
+          }}
+        >
+          <h2 style={{ color: '#ff4757', marginBottom: '1rem' }}>
+            Backend Connection Error
+          </h2>
+          <p style={{ marginBottom: '2rem', maxWidth: '600px' }}>
+            {backendError}
+          </p>
+          <button
+            onClick={checkBackendHealth}
+            style={{
+              padding: '1rem 2rem',
+              fontSize: '1rem',
+              backgroundColor: '#2ed573',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+            }}
+          >
+            Retry Connection
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="landing-container">
       {/* Hero */}
@@ -434,9 +511,9 @@ export default function LandingPage() {
             <p className="lead">
               Inspired by the foraging behavior of honey bees, this ABC
               algorithm alternates between local neighborhood searches
-              (“employed bees”), probabilistic selection of promising solutions
-              (“onlooker bees”), and random explorations when stuck (“scout
-              bees”). Each solution's quality is measured by the same
+              ("employed bees"), probabilistic selection of promising solutions
+              ("onlooker bees"), and random explorations when stuck ("scout
+              bees"). Each solution's quality is measured by the same
               diversity-plus-preference score.
             </p>
             <div className="algorithm-steps">
