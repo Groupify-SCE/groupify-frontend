@@ -24,8 +24,8 @@ const GroupsPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const fetchGroups = async () => {
-      setLoading(true);
       try {
         const result = await algoService.getAlgorithmResults(id);
         const data = await result.json();

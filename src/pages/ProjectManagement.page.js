@@ -4,6 +4,9 @@ import '../styles/ProjectManagementPage.style.css';
 import projectService from '../services/project.service';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
+import CriteriaSection from '../contexts/Criteria.section';
+import ParticipantsSection from '../contexts/Participants.section';
+import ParticipantsViewSection from '../contexts/ParticipantsView.Section';
 import algoService from '../services/algo.service';
 import LoadingSpinner from '../components/LoadingSpinner';
 
@@ -18,7 +21,6 @@ const ParticipantsViewSection = lazy(
 
 function ProjectManagementPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('criteria');
   const [loading, setLoading] = useState(true);
   const [project, setProject] = useState({
@@ -29,7 +31,6 @@ function ProjectManagementPage() {
     registrants: 0,
     group_size: 0,
     preferences: 0,
-    groups: false,
   });
 
   useEffect(() => {
